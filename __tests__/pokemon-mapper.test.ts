@@ -2,12 +2,12 @@ import { POKEMON_IMAGE_URL_TEMPLATE, POKEMON_ID_PLACEHOLDER } from '../src/core'
 import { PokemonListDto, toPokemonPage } from '../src/data';
 
 const responseWithNext: PokemonListDto = {
-  count: 1351,
-  next: 'https://pokeapi.co/api/v2/pokemon?offset=2&limit=2',
+  count: 1025,
+  next: 'https://pokeapi.co/api/v2/pokemon-species?offset=2&limit=2',
   previous: null,
   results: [
-    { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
-    { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
+    { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon-species/1/' },
+    { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon-species/2/' },
   ],
 };
 
@@ -30,7 +30,7 @@ describe('toPokemonPage', () => {
 
   it('devuelve nextOffset null en la última página', () => {
     expect(
-      toPokemonPage({ ...responseWithNext, next: null }, 1350).nextOffset,
+      toPokemonPage({ ...responseWithNext, next: null }, 1023).nextOffset,
     ).toBeNull();
   });
 });

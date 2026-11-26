@@ -17,14 +17,14 @@ const pokeApiUrl = (path: string): string => `${POKEAPI_BASE_URL}${path}`;
 
 // Fuente de datos remota que consulta PokéAPI.
 export class PokemonRemoteDataSource {
-  // Pide al endpoint de Pokémon la página indicada por offset y límite.
+  // Pide al endpoint de especies la página indicada por offset y límite (sin formas alternativas).
   getPokemonList(offset: number, limit: number): Promise<PokemonListDto> {
     const query = new URLSearchParams({
       [POKEMON_QUERY_PARAMS.offset]: String(offset),
       [POKEMON_QUERY_PARAMS.limit]: String(limit),
     });
     return getJson<PokemonListDto>(
-      pokeApiUrl(`${POKEMON_ENDPOINT}?${query.toString()}`),
+      pokeApiUrl(`${POKEMON_SPECIES_ENDPOINT}?${query.toString()}`),
     );
   }
 

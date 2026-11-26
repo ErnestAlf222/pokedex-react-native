@@ -8,6 +8,5 @@ export interface PokemonDto {
   types: { type: NamedResourceDto }[];
   stats: { base_stat: number; stat: NamedResourceDto }[];
   abilities: { ability: NamedResourceDto }[];
-  sprites: { front_default: string | null; back_default: string | null };
   species: NamedResourceDto;
 }

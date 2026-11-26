@@ -46,12 +46,6 @@ export const bulbasaurDto: PokemonDto = {
     { ability: resource('ability', 'overgrow', 65) },
     { ability: resource('ability', 'chlorophyll', 34) },
   ],
-  sprites: {
-    front_default:
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-    back_default:
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png',
-  },
   species: species('bulbasaur', 1),
 };
 

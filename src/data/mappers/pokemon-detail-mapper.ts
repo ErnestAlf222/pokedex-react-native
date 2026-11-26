@@ -21,7 +21,5 @@ export const toPokemonDetail = (
   abilities: pokemon.abilities.map(({ ability }) => ability.name),
   height: pokemon.height,
   weight: pokemon.weight,
-  spriteFront: pokemon.sprites.front_default,
-  spriteBack: pokemon.sprites.back_default,
   evolutions: toEvolutionStages(chain),
 });

@@ -15,7 +15,5 @@ export interface PokemonDetail {
   abilities: string[];
   height: number;
   weight: number;
-  spriteFront: string | null;
-  spriteBack: string | null;
   evolutions: EvolutionStage[];
 }

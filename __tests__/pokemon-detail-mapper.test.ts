@@ -27,11 +27,9 @@ describe('toPokemonDetail', () => {
     });
   });
 
-  it('mapea tipos, habilidades y sprites de frente y de espalda', () => {
+  it('mapea los tipos y las habilidades', () => {
     expect(detail.types).toEqual(['grass', 'poison']);
     expect(detail.abilities).toEqual(['overgrow', 'chlorophyll']);
-    expect(detail.spriteFront).toBe(bulbasaurDto.sprites.front_default);
-    expect(detail.spriteBack).toBe(bulbasaurDto.sprites.back_default);
   });
 
   it('mapea los stats con su nombre y valor base', () => {

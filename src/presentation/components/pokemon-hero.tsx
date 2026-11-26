@@ -40,7 +40,11 @@ export const PokemonHero = ({
         style={styles.watermark}
       />
       <BackButton onPress={onBack} />
-      <HeroImage imageUrl={imageUrl} shinyImageUrl={shinyImageUrl} />
+      <HeroImage
+        key={imageUrl}
+        imageUrl={imageUrl}
+        shinyImageUrl={shinyImageUrl}
+      />
     </LinearGradient>
   );
 };
