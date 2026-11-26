@@ -1,7 +1,10 @@
 export const sizes = {
   loader: 64,
   loaderSmall: 32,
-  cardImage: 120,
+  cardImage: 128,
+  cardWatermark: 96,
+  cardWatermarkOffset: -24,
+  badgeRow: 18,
   heroImage: 200,
   heroPerspective: 800,
   watermark: 260,
@@ -14,7 +17,9 @@ export const sizes = {
   evolutionImage: 72,
   evolutionItem: 96,
   borderThick: 2,
-  searchBarHeight: 48,
+  searchBarHeight: 52,
   bannerHeight: 24,
   searchIcon: 22,
+  headerIcon: 32,
+  chipHeight: 36,
 } as const;

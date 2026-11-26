@@ -1,6 +1,12 @@
 import { FlatList, FlatListProps, StyleSheet } from 'react-native';
-import { END_REACHED_THRESHOLD, LIST_COLUMNS, spacing } from '../../core';
-import { PokemonSummary } from '../../domain';
+import {
+  CARD_ENTER_DELAY_MS,
+  END_REACHED_THRESHOLD,
+  LIST_COLUMNS,
+  MAX_ANIMATED_CARDS,
+  spacing,
+} from '../../core';
+import { PokemonSummary, PokemonTypeIndex } from '../../domain';
 import { PokemonCard } from './pokemon-card';
 
 type GridListProps = Pick<
@@ -14,12 +20,18 @@ type GridListProps = Pick<
 
 interface PokemonGridProps extends GridListProps {
   data: PokemonSummary[];
+  typeIndex?: PokemonTypeIndex;
   onPressPokemon: (id: number) => void;
 }
 
-// Cuadrícula de tarjetas de Pokémon, reutilizada por el listado y la búsqueda.
+// Retraso de entrada de la tarjeta; solo las primeras se animan.
+const getEnterDelay = (index: number): number | undefined =>
+  index < MAX_ANIMATED_CARDS ? index * CARD_ENTER_DELAY_MS : undefined;
+
+// Cuadrícula de tarjetas de Pokémon, reutilizada por el listado y los resultados filtrados.
 export const PokemonGrid = ({
   data,
+  typeIndex,
   onPressPokemon,
   ...listProps
 }: PokemonGridProps) => (
@@ -27,8 +39,13 @@ export const PokemonGrid = ({
     {...listProps}
     data={data}
     keyExtractor={item => String(item.id)}
-    renderItem={({ item }) => (
-      <PokemonCard pokemon={item} onPress={() => onPressPokemon(item.id)} />
+    renderItem={({ item, index }) => (
+      <PokemonCard
+        pokemon={item}
+        types={typeIndex?.[item.id]}
+        enterDelayMs={getEnterDelay(index)}
+        onPress={() => onPressPokemon(item.id)}
+      />
     )}
     numColumns={LIST_COLUMNS}
     contentContainerStyle={styles.content}

@@ -13,11 +13,16 @@ export const UI_MESSAGES = {
   clearSearch: 'Limpiar búsqueda',
   offline: 'Sin conexión',
   backOnline: 'Conexión restablecida',
+  allTypes: 'Todos',
 } as const;
 
-// Mensaje de búsqueda sin coincidencias, incluyendo lo que se buscó.
-export const noResultsMessage = (query: string): string =>
-  `Sin resultados para "${query}"`;
+// Mensaje sin coincidencias, incluyendo el texto buscado y el tipo elegido si los hay.
+export const noResultsMessage = (query: string, type: string): string => {
+  const criteria = [query && `"${query}"`, type && `tipo ${type}`]
+    .filter(Boolean)
+    .join(' · ');
+  return criteria === '' ? UI_MESSAGES.empty : `Sin resultados para ${criteria}`;
+};
 
 // Etiqueta por stat; la clave es el nombre del stat que devuelve PokéAPI.
 export const STAT_LABELS: Record<string, string> = {

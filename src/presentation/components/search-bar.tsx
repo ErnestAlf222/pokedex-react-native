@@ -7,6 +7,7 @@ import {
   colors,
   fontSize,
   radius,
+  shadows,
   sizes,
   spacing,
 } from '../../core';
@@ -17,7 +18,7 @@ interface SearchBarProps {
   onFocus?: () => void;
 }
 
-// Barra de búsqueda con lupa y un botón para limpiar que aparece solo con texto.
+// Barra de búsqueda en píldora con sombra suave, lupa y un botón para limpiar que aparece solo con texto.
 export const SearchBar = ({ value, onChangeText, onFocus }: SearchBarProps) => (
   <View style={styles.container}>
     <MaterialIcons
@@ -57,13 +58,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: sizes.searchBarHeight,
     marginHorizontal: spacing.md,
-    marginTop: spacing.sm,
-    paddingHorizontal: spacing.md,
+    marginTop: spacing.md,
+    paddingHorizontal: spacing.lg,
     gap: spacing.sm,
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
-    borderWidth: StyleSheet.hairlineWidth,
+    backgroundColor: colors.background,
     borderRadius: radius.full,
+    ...shadows.soft,
   },
   input: {
     flex: 1,

@@ -19,6 +19,14 @@ export const SEARCH_DEBOUNCE_MS = 300;
 export const BANNER_ANIMATION_MS = 250;
 export const BANNER_RESTORED_DURATION_MS = 2500;
 
+export const ALL_TYPES_VALUE = '';
+export const CARD_ENTER_DELAY_MS = 60;
+export const CARD_ENTER_DURATION_MS = 350;
+export const MAX_ANIMATED_CARDS = 8;
+export const PRESS_ANIMATION_MS = 100;
+export const CARD_GRADIENT_START = { x: 0, y: 0 } as const;
+export const CARD_GRADIENT_END = { x: 1, y: 1 } as const;
+
 export const INFINITE_REPETITIONS = -1;
 export const POKEBALL_SPIN_DURATION_MS = 1000;
 export const HERO_FLOAT_DURATION_MS = 2000;

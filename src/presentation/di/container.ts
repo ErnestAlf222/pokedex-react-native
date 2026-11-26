@@ -6,6 +6,7 @@ import {
   GetAllPokemonUseCase,
   GetPokemonDetailUseCase,
   GetPokemonPageUseCase,
+  GetPokemonTypeIndexUseCase,
 } from '../../domain';
 
 const pokemonRepository = new PokemonRepositoryImpl(
@@ -16,4 +17,5 @@ export const container = {
   getPokemonPageUseCase: new GetPokemonPageUseCase(pokemonRepository),
   getPokemonDetailUseCase: new GetPokemonDetailUseCase(pokemonRepository),
   getAllPokemonUseCase: new GetAllPokemonUseCase(pokemonRepository),
+  getPokemonTypeIndexUseCase: new GetPokemonTypeIndexUseCase(pokemonRepository),
 };

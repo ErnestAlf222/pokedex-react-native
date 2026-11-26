@@ -13,6 +13,8 @@ export * from './pokemon-hero';
 export * from './pokemon-infinite-list';
 export * from './pokemon-search-results';
 export * from './query-fallback-view';
+export * from './screen-header';
 export * from './search-bar';
 export * from './stat-bar';
 export * from './type-badge';
+export * from './type-filter-chips';

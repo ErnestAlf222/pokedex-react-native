@@ -6,9 +6,12 @@ export const INITIAL_OFFSET = 0;
 export const POKEMON_DETAIL_STALE_TIME_MS = 30 * MS_PER_MINUTE;
 export const ALL_POKEMON_STALE_TIME_MS = Infinity;
 export const ALL_POKEMON_GC_TIME_MS = Infinity;
+export const TYPE_INDEX_STALE_TIME_MS = Infinity;
+export const TYPE_INDEX_GC_TIME_MS = Infinity;
 
 export const POKEMON_QUERY_KEYS = {
   list: ['pokemon', 'list'],
   all: ['pokemon', 'all'],
+  typeIndex: ['pokemon', 'type-index'],
   detail: (id: number) => ['pokemon', 'detail', id],
 } as const;

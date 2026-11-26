@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { getQueryViewState, sizes, spacing } from '../../core';
+import { PokemonTypeIndex } from '../../domain';
 import { usePokemonList } from '../hooks';
 import { EmptyView } from './empty-view';
 import { PokeballLoader } from './pokeball-loader';
@@ -7,11 +8,13 @@ import { PokemonGrid } from './pokemon-grid';
 import { QueryFallbackView } from './query-fallback-view';
 
 interface PokemonInfiniteListProps {
+  typeIndex?: PokemonTypeIndex;
   onPressPokemon: (id: number) => void;
 }
 
 // Listado paginado con scroll infinito, pull to refresh y estados de carga, sin conexión y error.
 export const PokemonInfiniteList = ({
+  typeIndex,
   onPressPokemon,
 }: PokemonInfiniteListProps) => {
   const query = usePokemonList();
@@ -46,6 +49,7 @@ export const PokemonInfiniteList = ({
   return (
     <PokemonGrid
       data={data}
+      typeIndex={typeIndex}
       onPressPokemon={onPressPokemon}
       onEndReached={loadMore}
       refreshing={isRefetching && !isFetchingNextPage}

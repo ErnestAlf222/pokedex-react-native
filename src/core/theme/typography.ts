@@ -1,4 +1,5 @@
 export const fontSize = {
+  tiny: 10,
   caption: 12,
   body: 16,
   subtitle: 20,

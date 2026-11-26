@@ -6,13 +6,14 @@ import {
   ERROR_MESSAGES,
   SEARCH_DEBOUNCE_MS,
 } from '../src/core';
-import { PokemonSummary } from '../src/domain';
+import { PokemonSummary, PokemonTypeIndex } from '../src/domain';
 import {
   EmptyView,
   ErrorView,
   PokemonCard,
   PokemonListScreen,
   SearchBar,
+  TypeFilterChips,
   container,
 } from '../src/presentation';
 
@@ -22,16 +23,34 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({ navigate: jest.fn() }),
 }));
 
+// Mock oficial de safe-area: la cabecera lee los insets sin un SafeAreaProvider.
+jest.mock('react-native-safe-area-context', () =>
+  require('react-native-safe-area-context/jest/mock').default,
+);
+
 // Reemplaza el contenedor para controlar el resultado de los casos de uso.
 jest.mock('../src/presentation/di', () => ({
   container: {
     getPokemonPageUseCase: { execute: jest.fn() },
     getAllPokemonUseCase: { execute: jest.fn() },
+    getPokemonTypeIndexUseCase: { execute: jest.fn() },
   },
 }));
 
 const execute = jest.mocked(container.getPokemonPageUseCase.execute);
 const executeAll = jest.mocked(container.getAllPokemonUseCase.execute);
+const executeTypeIndex = jest.mocked(
+  container.getPokemonTypeIndexUseCase.execute,
+);
+
+// Índice de tipos de prueba (slot 1 primero).
+const typeIndex: PokemonTypeIndex = {
+  1: ['grass', 'poison'],
+  4: ['fire'],
+  5: ['fire'],
+  6: ['fire', 'flying'],
+  7: ['water'],
+};
 
 // Crea un resumen de prueba; la imagen no influye en estas pruebas.
 const pokemon = (id: number, name: string): PokemonSummary => ({
@@ -90,10 +109,30 @@ const searchFor = async (
   await flushQuery();
 };
 
+// Elige un chip de tipo y espera a que se cargue la lista completa.
+const selectType = async (
+  renderer: ReactTestRenderer.ReactTestRenderer,
+  type: string,
+) => {
+  await ReactTestRenderer.act(async () => {
+    renderer.root.findByType(TypeFilterChips).props.onSelect(type);
+  });
+  await flushQuery();
+  await flushQuery();
+};
+
+// Nombres de las tarjetas visibles.
+const cardNames = (renderer: ReactTestRenderer.ReactTestRenderer) =>
+  renderer.root.findAllByType(PokemonCard).map(card => card.props.pokemon.name);
+
 // Pruebas del estado de error de la pantalla de listado.
 describe('PokemonListScreen con el caso de uso fallando', () => {
   beforeEach(() => {
     execute.mockReset();
+    executeTypeIndex.mockReset();
+    executeTypeIndex.mockRejectedValue(
+      new AppError(AppErrorType.Network, ERROR_MESSAGES.network),
+    );
     execute.mockRejectedValue(
       new AppError(AppErrorType.Network, ERROR_MESSAGES.network),
     );
@@ -125,6 +164,8 @@ describe('PokemonListScreen con la barra de búsqueda', () => {
   beforeEach(() => {
     execute.mockReset();
     executeAll.mockReset();
+    executeTypeIndex.mockReset();
+    executeTypeIndex.mockResolvedValue(typeIndex);
     execute.mockResolvedValue({
       items: [pokemon(1, 'bulbasaur'), pokemon(2, 'ivysaur')],
       nextOffset: null,
@@ -157,5 +198,68 @@ describe('PokemonListScreen con la barra de búsqueda', () => {
 
     expect(renderer.root.findAllByType(PokemonCard)).toHaveLength(0);
     expect(renderer.root.findByType(EmptyView).props.message).toContain('zzz');
+  });
+});
+
+// Pruebas del filtro por tipo con los chips del listado.
+describe('PokemonListScreen con el filtro por tipo', () => {
+  beforeEach(() => {
+    execute.mockReset();
+    executeAll.mockReset();
+    executeTypeIndex.mockReset();
+    executeTypeIndex.mockResolvedValue(typeIndex);
+    execute.mockResolvedValue({
+      items: [pokemon(1, 'bulbasaur'), pokemon(2, 'ivysaur')],
+      nextOffset: null,
+    });
+    executeAll.mockResolvedValue(allPokemon);
+  });
+
+  it('deriva los chips del índice de tipos', async () => {
+    const renderer = await renderScreen();
+
+    expect(renderer.root.findByType(TypeFilterChips).props.types).toEqual([
+      'fire',
+      'flying',
+      'grass',
+      'poison',
+      'water',
+    ]);
+  });
+
+  it('muestra solo los Pokémon del tipo elegido y vuelve a la lista con Todos', async () => {
+    const renderer = await renderScreen();
+
+    await selectType(renderer, 'fire');
+    expect(cardNames(renderer)).toEqual([
+      'charmander',
+      'charmeleon',
+      'charizard',
+    ]);
+
+    await selectType(renderer, '');
+    expect(cardNames(renderer)).toEqual(['bulbasaur', 'ivysaur']);
+  });
+
+  it('combina el texto buscado con el tipo elegido', async () => {
+    const renderer = await renderScreen();
+
+    await selectType(renderer, 'water');
+    await searchFor(renderer, 'char');
+
+    expect(renderer.root.findAllByType(PokemonCard)).toHaveLength(0);
+    const message = renderer.root.findByType(EmptyView).props.message;
+    expect(message).toContain('char');
+    expect(message).toContain('Water');
+  });
+
+  it('oculta los chips y mantiene el listado si no hay índice de tipos', async () => {
+    executeTypeIndex.mockRejectedValue(
+      new AppError(AppErrorType.Network, ERROR_MESSAGES.network),
+    );
+    const renderer = await renderScreen();
+
+    expect(renderer.root.findAllByType(TypeFilterChips)).toHaveLength(0);
+    expect(cardNames(renderer)).toEqual(['bulbasaur', 'ivysaur']);
   });
 });

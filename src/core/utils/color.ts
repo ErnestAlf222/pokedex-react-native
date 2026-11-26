@@ -15,6 +15,14 @@ export const darkenColor = (hex: string, factor: number): string => {
   return `#${channels.join('')}`;
 };
 
+// Convierte un color #RRGGBB en rgba con la opacidad indicada.
+export const withAlpha = (hex: string, alpha: number): string => {
+  const [red = 0, green = 0, blue = 0] = (hex.slice(1).match(CHANNEL_PATTERN) ?? []).map(
+    channel => parseInt(channel, HEX_RADIX),
+  );
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+};
+
 // Devuelve el color del tipo, o el de respaldo si el tipo es desconocido.
 export const getTypeColor = (type: string): string =>
   typeColors[type] ?? fallbackTypeColor;
