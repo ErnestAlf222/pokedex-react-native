@@ -1,89 +1,48 @@
 import { useNavigation } from '@react-navigation/native';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ROUTES, SEARCH_DEBOUNCE_MS } from '../../core';
 import {
-  END_REACHED_THRESHOLD,
-  LIST_COLUMNS,
-  ROUTES,
-  getErrorMessage,
-  layout,
-  sizes,
-  spacing,
-} from '../../core';
-import {
-  EmptyView,
-  ErrorView,
-  PokeballLoader,
-  PokemonCard,
+  PokemonInfiniteList,
+  PokemonSearchResults,
+  SearchBar,
 } from '../components';
-import { usePokemonList } from '../hooks';
+import { useAllPokemon, useDebouncedValue } from '../hooks';
 import { AppNavigation } from '../navigation';
 
-// Pantalla del listado en cuadrícula con scroll infinito, refresco y estados.
+// Pantalla del listado: barra de búsqueda fija y, debajo, el listado paginado o los resultados.
 export const PokemonListScreen = () => {
   const navigation = useNavigation<AppNavigation>();
-  const {
-    data,
-    error,
-    isPending,
-    isRefetching,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-    refetch,
-  } = usePokemonList();
+  const [query, setQuery] = useState('');
+  const [hasFocusedSearch, setHasFocusedSearch] = useState(false);
+  const debouncedQuery = useDebouncedValue(query, SEARCH_DEBOUNCE_MS);
+  const isSearching = debouncedQuery.trim() !== '';
+  const all = useAllPokemon({ enabled: hasFocusedSearch || isSearching });
 
-  if (isPending) {
-    return (
-      <View style={layout.center}>
-        <PokeballLoader />
-      </View>
-    );
-  }
-
-  if (!data) {
-    return (
-      <ErrorView message={getErrorMessage(error)} onRetry={() => refetch()} />
-    );
-  }
-
-  // Pide la siguiente página si existe y no hay otra carga en curso.
-  const loadMore = () => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  };
+  // Abre el detalle del Pokémon elegido.
+  const openDetail = (id: number) =>
+    navigation.navigate(ROUTES.pokemonDetail, { id });
 
   return (
-    <FlatList
-      data={data}
-      keyExtractor={item => String(item.id)}
-      renderItem={({ item }) => (
-        <PokemonCard
-          pokemon={item}
-          onPress={() =>
-            navigation.navigate(ROUTES.pokemonDetail, { id: item.id })
-          }
+    <View style={styles.screen}>
+      <SearchBar
+        value={query}
+        onChangeText={setQuery}
+        onFocus={() => setHasFocusedSearch(true)}
+      />
+      {isSearching ? (
+        <PokemonSearchResults
+          all={all}
+          query={debouncedQuery}
+          onPressPokemon={openDetail}
         />
+      ) : (
+        <PokemonInfiniteList onPressPokemon={openDetail} />
       )}
-      numColumns={LIST_COLUMNS}
-      contentContainerStyle={styles.content}
-      onEndReached={loadMore}
-      onEndReachedThreshold={END_REACHED_THRESHOLD}
-      refreshing={isRefetching && !isFetchingNextPage}
-      onRefresh={() => refetch()}
-      ListEmptyComponent={EmptyView}
-      ListFooterComponent={
-        isFetchingNextPage ? (
-          <View style={styles.footer}>
-            <PokeballLoader size={sizes.loaderSmall} />
-          </View>
-        ) : undefined
-      }
-    />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  content: { flexGrow: 1, padding: spacing.sm },
-  footer: { alignItems: 'center', padding: spacing.md },
+  screen: { flex: 1 },
 });

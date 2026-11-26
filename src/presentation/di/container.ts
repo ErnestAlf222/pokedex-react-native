@@ -2,7 +2,11 @@ import {
   PokemonRemoteDataSource,
   PokemonRepositoryImpl,
 } from '../../data';
-import { GetPokemonDetailUseCase, GetPokemonPageUseCase } from '../../domain';
+import {
+  GetAllPokemonUseCase,
+  GetPokemonDetailUseCase,
+  GetPokemonPageUseCase,
+} from '../../domain';
 
 const pokemonRepository = new PokemonRepositoryImpl(
   new PokemonRemoteDataSource(),
@@ -11,4 +15,5 @@ const pokemonRepository = new PokemonRepositoryImpl(
 export const container = {
   getPokemonPageUseCase: new GetPokemonPageUseCase(pokemonRepository),
   getPokemonDetailUseCase: new GetPokemonDetailUseCase(pokemonRepository),
+  getAllPokemonUseCase: new GetAllPokemonUseCase(pokemonRepository),
 };

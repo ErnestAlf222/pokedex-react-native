@@ -1,10 +1,15 @@
-import { formatSlug } from '../../core';
+import { POKEMON_NUMBER_PREFIX, formatSlug } from '../../core';
 import { PokemonSummary } from '../entities';
 
 const DIGITS_ONLY = /^\d+$/;
 
-// Normaliza la consulta: minúsculas y sin espacios sobrantes.
-const normalize = (query: string): string => query.trim().toLowerCase();
+// Normaliza la consulta: minúsculas, sin espacios sobrantes y sin el "#" inicial.
+const normalize = (query: string): string => {
+  const text = query.trim().toLowerCase();
+  return text.startsWith(POKEMON_NUMBER_PREFIX)
+    ? text.slice(POKEMON_NUMBER_PREFIX.length)
+    : text;
+};
 
 // Indica si el nombre contiene el texto, en su forma de slug o en la legible.
 const matchesName = (name: string, text: string): boolean =>

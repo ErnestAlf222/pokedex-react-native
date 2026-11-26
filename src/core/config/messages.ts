@@ -9,7 +9,13 @@ export const UI_MESSAGES = {
   stats: 'Estadísticas',
   evolutions: 'Evoluciones',
   noEvolutions: 'Este Pokémon no tiene evoluciones',
+  searchPlaceholder: 'Buscar por nombre o número',
+  clearSearch: 'Limpiar búsqueda',
 } as const;
+
+// Mensaje de búsqueda sin coincidencias, incluyendo lo que se buscó.
+export const noResultsMessage = (query: string): string =>
+  `Sin resultados para "${query}"`;
 
 // Etiqueta por stat; la clave es el nombre del stat que devuelve PokéAPI.
 export const STAT_LABELS: Record<string, string> = {

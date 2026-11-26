@@ -4,8 +4,11 @@ export const QUERY_STALE_TIME_MS = 5 * MS_PER_MINUTE;
 export const QUERY_RETRY_COUNT = 1;
 export const INITIAL_OFFSET = 0;
 export const POKEMON_DETAIL_STALE_TIME_MS = 30 * MS_PER_MINUTE;
+export const ALL_POKEMON_STALE_TIME_MS = Infinity;
+export const ALL_POKEMON_GC_TIME_MS = Infinity;
 
 export const POKEMON_QUERY_KEYS = {
   list: ['pokemon', 'list'],
+  all: ['pokemon', 'all'],
   detail: (id: number) => ['pokemon', 'detail', id],
 } as const;

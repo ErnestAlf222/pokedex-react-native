@@ -52,6 +52,15 @@ describe('searchPokemon', () => {
     ]);
   });
 
+  it('ignora un "#" inicial en la búsqueda por número', () => {
+    expect(searchPokemon(list, '#25').map(({ id }) => id)).toEqual([
+      25, 250, 251,
+    ]);
+    expect(searchPokemon(list, '#025').map(({ id }) => id)).toEqual([
+      25, 250, 251,
+    ]);
+  });
+
   it('devuelve toda la lista con una consulta vacía', () => {
     expect(searchPokemon(list, '')).toEqual(list);
     expect(searchPokemon(list, '   ')).toEqual(list);
