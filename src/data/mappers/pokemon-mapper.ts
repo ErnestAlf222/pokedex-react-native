@@ -6,9 +6,11 @@ import { NamedResourceDto, PokemonListDto } from '../models';
 const extractId = (url: string): number =>
   Number(url.split('/').filter(Boolean).pop());
 
-// Arma la URL de la imagen oficial a partir del id del Pokémon.
-export const buildImageUrl = (id: number): string =>
-  POKEMON_IMAGE_URL_TEMPLATE.replace(POKEMON_ID_PLACEHOLDER, String(id));
+// Arma la URL de una imagen a partir del id, con la plantilla oficial por defecto.
+export const buildImageUrl = (
+  id: number,
+  template: string = POKEMON_IMAGE_URL_TEMPLATE,
+): string => template.replace(POKEMON_ID_PLACEHOLDER, String(id));
 
 // Convierte un recurso con nombre y URL en un PokemonSummary con su imagen.
 export const toPokemonSummary = ({

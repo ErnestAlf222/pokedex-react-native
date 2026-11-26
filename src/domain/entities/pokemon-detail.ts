@@ -9,6 +9,7 @@ export interface PokemonDetail {
   id: number;
   name: string;
   imageUrl: string;
+  shinyImageUrl: string;
   types: string[];
   stats: PokemonStat[];
   abilities: string[];

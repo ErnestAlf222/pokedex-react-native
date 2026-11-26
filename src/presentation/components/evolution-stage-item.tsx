@@ -39,6 +39,7 @@ export const EvolutionStageItem = ({
 
 const styles = StyleSheet.create({
   item: {
+    width: sizes.evolutionItem,
     alignItems: 'center',
     padding: spacing.sm,
     borderRadius: radius.md,

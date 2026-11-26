@@ -1,3 +1,4 @@
+import { POKEMON_SHINY_IMAGE_URL_TEMPLATE } from '../../core';
 import { PokemonDetail } from '../../domain';
 import { EvolutionChainDto, PokemonDto } from '../models';
 import { toEvolutionStages } from './evolution-chain-mapper';
@@ -11,6 +12,7 @@ export const toPokemonDetail = (
   id: pokemon.id,
   name: pokemon.name,
   imageUrl: buildImageUrl(pokemon.id),
+  shinyImageUrl: buildImageUrl(pokemon.id, POKEMON_SHINY_IMAGE_URL_TEMPLATE),
   types: pokemon.types.map(({ type }) => type.name),
   stats: pokemon.stats.map(({ base_stat, stat }) => ({
     name: stat.name,

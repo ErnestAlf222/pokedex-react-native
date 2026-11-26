@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { UI_MESSAGES, colors, fontSize, spacing } from '../../core';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { UI_MESSAGES, colors, fontSize, sizes, spacing } from '../../core';
 import { EvolutionStage } from '../../domain';
 import { EvolutionStageItem } from './evolution-stage-item';
 
@@ -9,7 +9,19 @@ interface EvolutionSectionProps {
   onSelect: (id: number) => void;
 }
 
-// Fila horizontal con la cadena evolutiva, o un aviso si no hay evoluciones.
+const ITEM_STRIDE = sizes.evolutionItem + spacing.sm;
+
+// Calcula la posición de cada tarjeta (ancho fijo más separador) para el scroll inicial.
+const getItemLayout = (_: unknown, index: number) => ({
+  length: sizes.evolutionItem,
+  offset: ITEM_STRIDE * index,
+  index,
+});
+
+// Espacio entre tarjetas de la fila.
+const Separator = () => <View style={styles.separator} />;
+
+// Fila horizontal con la cadena evolutiva, abierta en la etapa actual, o un aviso si no hay evoluciones.
 export const EvolutionSection = ({
   stages,
   currentId,
@@ -18,22 +30,28 @@ export const EvolutionSection = ({
   stages.length <= 1 ? (
     <Text style={styles.empty}>{UI_MESSAGES.noEvolutions}</Text>
   ) : (
-    <ScrollView
+    <FlatList
       horizontal
+      data={stages}
+      keyExtractor={stage => String(stage.id)}
+      getItemLayout={getItemLayout}
+      initialScrollIndex={Math.max(
+        stages.findIndex(stage => stage.id === currentId),
+        0,
+      )}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.list}>
-      {stages.map(stage => (
+      ItemSeparatorComponent={Separator}
+      renderItem={({ item }) => (
         <EvolutionStageItem
-          key={stage.id}
-          stage={stage}
-          isCurrent={stage.id === currentId}
-          onPress={() => onSelect(stage.id)}
+          stage={item}
+          isCurrent={item.id === currentId}
+          onPress={() => onSelect(item.id)}
         />
-      ))}
-    </ScrollView>
+      )}
+    />
   );
 
 const styles = StyleSheet.create({
-  list: { gap: spacing.sm },
+  separator: { width: spacing.sm },
   empty: { fontSize: fontSize.body, color: colors.textSecondary },
 });

@@ -20,12 +20,12 @@ import {
 
 interface HeroImageProps {
   imageUrl: string;
-  spriteBack: string | null;
+  shinyImageUrl: string;
 }
 
-// Imagen del héroe que flota y, al tocarla, gira 360° alternando con el sprite de espalda.
-export const HeroImage = ({ imageUrl, spriteBack }: HeroImageProps) => {
-  const [showBack, setShowBack] = useState(false);
+// Imagen del héroe que flota y, al tocarla, gira 360° alternando con su versión shiny.
+export const HeroImage = ({ imageUrl, shinyImageUrl }: HeroImageProps) => {
+  const [showShiny, setShowShiny] = useState(false);
   const offset = useSharedValue(0);
   const rotation = useSharedValue(0);
 
@@ -40,19 +40,15 @@ export const HeroImage = ({ imageUrl, spriteBack }: HeroImageProps) => {
     );
   }, [offset]);
 
-  // Alterna la imagen mostrada, solo si existe el sprite de espalda.
-  const toggleSprite = () => {
-    if (spriteBack) {
-      setShowBack(previous => !previous);
-    }
-  };
+  // Alterna entre la imagen normal y la shiny.
+  const toggleShiny = () => setShowShiny(previous => !previous);
 
   // Cambia la imagen justo cuando el giro cruza la mitad (cara oculta).
   useAnimatedReaction(
     () => rotation.value >= HALF_TURN_DEGREES,
     (isPastHalf, wasPastHalf) => {
       if (isPastHalf && !wasPastHalf) {
-        scheduleOnRN(toggleSprite);
+        scheduleOnRN(toggleShiny);
       }
     },
   );
@@ -80,7 +76,7 @@ export const HeroImage = ({ imageUrl, spriteBack }: HeroImageProps) => {
   return (
     <Pressable onPress={flip} style={styles.box}>
       <Animated.Image
-        source={{ uri: showBack && spriteBack ? spriteBack : imageUrl }}
+        source={{ uri: showShiny ? shinyImageUrl : imageUrl }}
         style={[styles.image, animatedStyle]}
         resizeMode="contain"
       />

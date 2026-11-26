@@ -1,4 +1,8 @@
-import { POKEMON_ID_PLACEHOLDER, POKEMON_IMAGE_URL_TEMPLATE } from '../src/core';
+import {
+  POKEMON_ID_PLACEHOLDER,
+  POKEMON_IMAGE_URL_TEMPLATE,
+  POKEMON_SHINY_IMAGE_URL_TEMPLATE,
+} from '../src/core';
 import { toPokemonDetail } from '../src/data';
 import { bulbasaurChainDto, bulbasaurDto } from '../__fixtures__/pokemon-data';
 
@@ -6,13 +10,17 @@ import { bulbasaurChainDto, bulbasaurDto } from '../__fixtures__/pokemon-data';
 describe('toPokemonDetail', () => {
   const detail = toPokemonDetail(bulbasaurDto, bulbasaurChainDto);
 
-  it('mapea los datos básicos y la imagen desde la plantilla de config', () => {
+  it('mapea los datos básicos y las imágenes desde las plantillas de config', () => {
     expect(detail).toMatchObject({
       id: 1,
       name: 'bulbasaur',
       height: 7,
       weight: 69,
       imageUrl: POKEMON_IMAGE_URL_TEMPLATE.replace(
+        POKEMON_ID_PLACEHOLDER,
+        '1',
+      ),
+      shinyImageUrl: POKEMON_SHINY_IMAGE_URL_TEMPLATE.replace(
         POKEMON_ID_PLACEHOLDER,
         '1',
       ),

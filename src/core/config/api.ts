@@ -6,4 +6,6 @@ export const POKEMON_PAGE_SIZE = 20;
 export const POKEMON_QUERY_PARAMS = { offset: 'offset', limit: 'limit' } as const;
 
 export const POKEMON_ID_PLACEHOLDER = '{id}';
-export const POKEMON_IMAGE_URL_TEMPLATE = `${POKEAPI_SPRITES_BASE_URL}/pokemon/other/official-artwork/${POKEMON_ID_PLACEHOLDER}.png`;
+const OFFICIAL_ARTWORK_URL = `${POKEAPI_SPRITES_BASE_URL}/pokemon/other/official-artwork`;
+export const POKEMON_IMAGE_URL_TEMPLATE = `${OFFICIAL_ARTWORK_URL}/${POKEMON_ID_PLACEHOLDER}.png`;
+export const POKEMON_SHINY_IMAGE_URL_TEMPLATE = `${OFFICIAL_ARTWORK_URL}/shiny/${POKEMON_ID_PLACEHOLDER}.png`;

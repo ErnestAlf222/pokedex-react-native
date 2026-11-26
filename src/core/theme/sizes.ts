@@ -12,5 +12,6 @@ export const sizes = {
   statValueWidth: 36,
   statBarHeight: 8,
   evolutionImage: 72,
+  evolutionItem: 96,
   borderThick: 2,
 } as const;

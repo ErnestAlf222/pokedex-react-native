@@ -70,7 +70,7 @@ export const PokemonDetailScreen = ({
     <ScrollView style={styles.screen}>
       <PokemonHero
         imageUrl={data.imageUrl}
-        spriteBack={data.spriteBack}
+        shinyImageUrl={data.shinyImageUrl}
         gradientColors={gradientColors}
         onBack={goBack}
       />

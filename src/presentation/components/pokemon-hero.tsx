@@ -15,7 +15,7 @@ import { HeroImage } from './hero-image';
 
 interface PokemonHeroProps {
   imageUrl: string;
-  spriteBack: string | null;
+  shinyImageUrl: string;
   gradientColors: [string, string];
   onBack: () => void;
 }
@@ -23,7 +23,7 @@ interface PokemonHeroProps {
 // Encabezado con gradiente, marca de agua, imagen interactiva y botón de volver.
 export const PokemonHero = ({
   imageUrl,
-  spriteBack,
+  shinyImageUrl,
   gradientColors,
   onBack,
 }: PokemonHeroProps) => {
@@ -40,7 +40,7 @@ export const PokemonHero = ({
         style={styles.watermark}
       />
       <BackButton onPress={onBack} />
-      <HeroImage imageUrl={imageUrl} spriteBack={spriteBack} />
+      <HeroImage imageUrl={imageUrl} shinyImageUrl={shinyImageUrl} />
     </LinearGradient>
   );
 };
