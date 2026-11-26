@@ -1,4 +1,5 @@
 export * from './api';
+export * from './cache';
 export * from './env';
 export * from './messages';
 export * from './query';
