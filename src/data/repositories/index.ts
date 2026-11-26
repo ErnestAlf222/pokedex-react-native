@@ -1,1 +1,1 @@
-export {};
+export * from './pokemon-repository-impl';
