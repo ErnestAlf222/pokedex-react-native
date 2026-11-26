@@ -11,6 +11,8 @@ export const UI_MESSAGES = {
   noEvolutions: 'Este Pokémon no tiene evoluciones',
   searchPlaceholder: 'Buscar por nombre o número',
   clearSearch: 'Limpiar búsqueda',
+  offline: 'Sin conexión',
+  backOnline: 'Conexión restablecida',
 } as const;
 
 // Mensaje de búsqueda sin coincidencias, incluyendo lo que se buscó.
@@ -33,6 +35,7 @@ export const UNIT_LABELS = {
 } as const;
 
 export const ERROR_MESSAGES = {
+  offline: 'Sin conexión. Conéctate a internet para cargar los datos.',
   network: 'No hay conexión de red',
   http: 'El servidor respondió con un error',
   unknown: 'Ocurrió un error inesperado',

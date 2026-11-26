@@ -24,19 +24,17 @@ import {
   fontWeight,
   formatPokemonNumber,
   formatSlug,
-  getErrorMessage,
   getGradientColors,
+  getQueryViewState,
   hectogramsToKilograms,
-  layout,
   spacing,
 } from '../../core';
 import {
   BackButton,
-  ErrorView,
   EvolutionSection,
   InfoItem,
-  PokeballLoader,
   PokemonHero,
+  QueryFallbackView,
   StatBar,
   TypeBadge,
 } from '../components';
@@ -49,8 +47,9 @@ export const PokemonDetailScreen = ({
   navigation,
 }: PokemonDetailScreenProps) => {
   const { id } = route.params;
-  const { data, error, isPending, isPlaceholderData, refetch } =
-    usePokemonDetail(id);
+  const query = usePokemonDetail(id);
+  const { data, error, isPlaceholderData, refetch } = query;
+  const viewState = getQueryViewState(query);
   const scrollRef = useRef<ScrollViewInstance>(null);
   const opacity = useSharedValue(1);
 
@@ -75,19 +74,14 @@ export const PokemonDetailScreen = ({
   // Cambia el detalle a otra etapa en esta misma pantalla, sin apilar otra.
   const openStage = (stageId: number) => navigation.setParams({ id: stageId });
 
-  if (isPending || !data) {
+  if (viewState !== 'content' || !data) {
     return (
       <View style={styles.screen}>
-        {isPending ? (
-          <View style={layout.center}>
-            <PokeballLoader />
-          </View>
-        ) : (
-          <ErrorView
-            message={getErrorMessage(error)}
-            onRetry={() => refetch()}
-          />
-        )}
+        <QueryFallbackView
+          state={viewState}
+          error={error}
+          onRetry={() => refetch()}
+        />
         <BackButton onPress={goBack} />
       </View>
     );

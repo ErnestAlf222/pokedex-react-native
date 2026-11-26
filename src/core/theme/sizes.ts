@@ -15,5 +15,6 @@ export const sizes = {
   evolutionItem: 96,
   borderThick: 2,
   searchBarHeight: 48,
+  bannerHeight: 24,
   searchIcon: 22,
 } as const;

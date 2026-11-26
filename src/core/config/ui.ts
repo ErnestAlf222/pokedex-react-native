@@ -16,6 +16,8 @@ export const BACK_ICON_NAME = 'arrow-back';
 export const SEARCH_ICON_NAME = 'search';
 export const CLEAR_ICON_NAME = 'close';
 export const SEARCH_DEBOUNCE_MS = 300;
+export const BANNER_ANIMATION_MS = 250;
+export const BANNER_RESTORED_DURATION_MS = 2500;
 
 export const INFINITE_REPETITIONS = -1;
 export const POKEBALL_SPIN_DURATION_MS = 1000;

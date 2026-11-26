@@ -8,3 +8,8 @@ jest.mock('react-native-worklets', () =>
 jest.mock('react-native-reanimated', () =>
   require('react-native-reanimated/mock'),
 );
+
+// Mock oficial de NetInfo (siempre conectado por defecto).
+jest.mock('@react-native-community/netinfo', () =>
+  require('@react-native-community/netinfo/jest/netinfo-mock.js'),
+);

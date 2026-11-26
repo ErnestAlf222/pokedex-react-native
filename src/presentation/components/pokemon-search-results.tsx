@@ -1,12 +1,10 @@
 import { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { View } from 'react-native';
-import { getErrorMessage, layout, noResultsMessage } from '../../core';
+import { getQueryViewState, noResultsMessage } from '../../core';
 import { PokemonSummary, searchPokemon } from '../../domain';
 import { EmptyView } from './empty-view';
-import { ErrorView } from './error-view';
-import { PokeballLoader } from './pokeball-loader';
 import { PokemonGrid } from './pokemon-grid';
+import { QueryFallbackView } from './query-fallback-view';
 
 interface PokemonSearchResultsProps {
   all: UseQueryResult<PokemonSummary[]>;
@@ -14,7 +12,7 @@ interface PokemonSearchResultsProps {
   onPressPokemon: (id: number) => void;
 }
 
-// Resultados de la búsqueda local sobre la lista completa, con sus estados de carga y error.
+// Resultados de la búsqueda local sobre la lista completa, con sus estados de carga, sin conexión y error.
 export const PokemonSearchResults = ({
   all,
   query,
@@ -24,19 +22,13 @@ export const PokemonSearchResults = ({
     () => searchPokemon(all.data ?? [], query),
     [all.data, query],
   );
+  const viewState = getQueryViewState(all);
 
-  if (all.isPending) {
+  if (viewState !== 'content' || !all.data) {
     return (
-      <View style={layout.center}>
-        <PokeballLoader />
-      </View>
-    );
-  }
-
-  if (!all.data) {
-    return (
-      <ErrorView
-        message={getErrorMessage(all.error)}
+      <QueryFallbackView
+        state={viewState}
+        error={all.error}
         onRetry={() => all.refetch()}
       />
     );

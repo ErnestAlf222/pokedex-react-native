@@ -1,41 +1,38 @@
 import { StyleSheet, View } from 'react-native';
-import { getErrorMessage, layout, sizes, spacing } from '../../core';
+import { getQueryViewState, sizes, spacing } from '../../core';
 import { usePokemonList } from '../hooks';
 import { EmptyView } from './empty-view';
-import { ErrorView } from './error-view';
 import { PokeballLoader } from './pokeball-loader';
 import { PokemonGrid } from './pokemon-grid';
+import { QueryFallbackView } from './query-fallback-view';
 
 interface PokemonInfiniteListProps {
   onPressPokemon: (id: number) => void;
 }
 
-// Listado paginado con scroll infinito, pull to refresh y estados de carga y error.
+// Listado paginado con scroll infinito, pull to refresh y estados de carga, sin conexión y error.
 export const PokemonInfiniteList = ({
   onPressPokemon,
 }: PokemonInfiniteListProps) => {
+  const query = usePokemonList();
   const {
     data,
     error,
-    isPending,
     isRefetching,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
     refetch,
-  } = usePokemonList();
+  } = query;
+  const viewState = getQueryViewState(query);
 
-  if (isPending) {
+  if (viewState !== 'content' || !data) {
     return (
-      <View style={layout.center}>
-        <PokeballLoader />
-      </View>
-    );
-  }
-
-  if (!data) {
-    return (
-      <ErrorView message={getErrorMessage(error)} onRetry={() => refetch()} />
+      <QueryFallbackView
+        state={viewState}
+        error={error}
+        onRetry={() => refetch()}
+      />
     );
   }
 

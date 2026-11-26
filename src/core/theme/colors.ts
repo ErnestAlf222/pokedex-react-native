@@ -9,4 +9,5 @@ export const colors = {
   textSecondary: '#666666',
   border: '#E0E0E0',
   error: '#D32F2F',
+  success: '#2E7D32',
 } as const;
