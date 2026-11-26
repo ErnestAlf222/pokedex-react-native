@@ -12,6 +12,7 @@ import {
   CARD_GRADIENT_END,
   CARD_GRADIENT_START,
   LIST_COLUMNS,
+  PERCENT,
   POKEBALL_ICON_NAME,
   PRESS_ANIMATION_MS,
   colors,
@@ -70,11 +71,13 @@ export const PokemonCard = ({
         enterDelayMs === undefined
           ? undefined
           : FadeInDown.delay(enterDelayMs).duration(CARD_ENTER_DURATION_MS)
-      }>
+      }
+    >
       <Pressable
         onPress={onPress}
         onPressIn={animateScale(effects.pressedScale)}
-        onPressOut={animateScale(1)}>
+        onPressOut={animateScale(1)}
+      >
         <Animated.View style={[styles.card, pressStyle]}>
           <View style={styles.clip}>
             <LinearGradient
@@ -111,7 +114,7 @@ export const PokemonCard = ({
 };
 
 const styles = StyleSheet.create({
-  cell: { flex: 1 / LIST_COLUMNS, margin: spacing.xs },
+  cell: { width: `${PERCENT / LIST_COLUMNS}%`, padding: spacing.xs },
   card: {
     padding: spacing.md,
     backgroundColor: colors.surface,

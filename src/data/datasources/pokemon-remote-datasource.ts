@@ -13,6 +13,7 @@ import {
   PokemonDto,
   PokemonListDto,
   PokemonSpeciesDto,
+  TypeDamageRelationsDto,
   TypeDto,
 } from '../models';
 
@@ -48,6 +49,17 @@ export class PokemonRemoteDataSource {
       listUrl(TYPE_ENDPOINT, INITIAL_OFFSET, POKEMON_FULL_LIST_LIMIT),
     );
     return Promise.all(list.results.map(({ url }) => getJson<TypeDto>(url)));
+  }
+
+  // Pide las relaciones de daño de cada tipo en paralelo, en el mismo orden recibido.
+  getTypeDamageRelations(
+    typeNames: string[],
+  ): Promise<TypeDamageRelationsDto[]> {
+    return Promise.all(
+      typeNames.map(name =>
+        getJson<TypeDamageRelationsDto>(pokeApiUrl(`${TYPE_ENDPOINT}/${name}`)),
+      ),
+    );
   }
 
   // Pide los datos básicos de un Pokémon por id.

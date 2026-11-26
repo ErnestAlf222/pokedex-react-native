@@ -4,6 +4,7 @@ import {
   PokemonRepository,
   PokemonSummary,
   PokemonTypeIndex,
+  TypeDamageRelations,
 } from '../../domain';
 import { PokemonRemoteDataSource } from '../datasources';
 import {
@@ -11,6 +12,7 @@ import {
   toPokemonPage,
   toPokemonSummary,
   toPokemonTypeIndex,
+  toTypeDamageRelations,
 } from '../mappers';
 
 // Implementación del repositorio de Pokémon sobre la fuente de datos remota.
@@ -41,7 +43,7 @@ export class PokemonRepositoryImpl implements PokemonRepository {
     const chain = await this.remoteDataSource.getEvolutionChain(
       species.evolution_chain.url,
     );
-    return toPokemonDetail(pokemon, chain);
+    return toPokemonDetail(pokemon, species, chain);
   }
 
   // Pide especies y tipos en paralelo; las especies definen qué ids son válidos (sin formas alternativas).
@@ -51,5 +53,13 @@ export class PokemonRepositoryImpl implements PokemonRepository {
       this.remoteDataSource.getAllTypes(),
     ]);
     return toPokemonTypeIndex(types, new Set(species.map(({ id }) => id)));
+  }
+
+  // Pide las relaciones de daño de cada tipo y las mapea a entidades de dominio.
+  async getTypeDamageRelations(
+    typeNames: string[],
+  ): Promise<TypeDamageRelations[]> {
+    const dtos = await this.remoteDataSource.getTypeDamageRelations(typeNames);
+    return dtos.map(toTypeDamageRelations);
   }
 }

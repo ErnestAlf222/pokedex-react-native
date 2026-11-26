@@ -3,6 +3,7 @@ import {
   PokemonDetail,
   PokemonSummary,
   PokemonTypeIndex,
+  TypeDamageRelations,
 } from '../entities';
 
 export interface PokemonRepository {
@@ -10,4 +11,5 @@ export interface PokemonRepository {
   getAllPokemon(): Promise<PokemonSummary[]>;
   getPokemonDetail(id: number): Promise<PokemonDetail>;
   getPokemonTypeIndex(): Promise<PokemonTypeIndex>;
+  getTypeDamageRelations(typeNames: string[]): Promise<TypeDamageRelations[]>;
 }

@@ -3,3 +3,5 @@ export * from './page';
 export * from './pokemon-detail';
 export * from './pokemon-summary';
 export * from './pokemon-type-index';
+export * from './type-damage-relations';
+export * from './type-effectiveness';
