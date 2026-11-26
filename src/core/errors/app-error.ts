@@ -4,6 +4,7 @@ export enum AppErrorType {
   Unknown = 'unknown',
 }
 
+// Error de aplicación tipado con su categoría y el código HTTP opcional.
 export class AppError extends Error {
   constructor(
     readonly type: AppErrorType,

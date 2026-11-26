@@ -1,6 +1,7 @@
 import { ERROR_MESSAGES } from '../config';
 import { AppError, AppErrorType } from '../errors';
 
+// Ejecuta el fetch y traduce los fallos de conexión a un AppError de red.
 const request = async (url: string): Promise<Response> => {
   try {
     return await fetch(url);
@@ -9,6 +10,7 @@ const request = async (url: string): Promise<Response> => {
   }
 };
 
+// Hace un GET y devuelve el JSON tipado, lanzando AppError ante cualquier fallo.
 export const getJson = async <T>(url: string): Promise<T> => {
   const response = await request(url);
   if (!response.ok) {

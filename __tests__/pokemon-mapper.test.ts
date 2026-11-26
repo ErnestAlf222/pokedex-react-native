@@ -11,9 +11,11 @@ const responseWithNext: PokemonListDto = {
   ],
 };
 
+// Arma la URL de imagen esperada a partir de la plantilla de config.
 const imageUrl = (id: number): string =>
   POKEMON_IMAGE_URL_TEMPLATE.replace(POKEMON_ID_PLACEHOLDER, String(id));
 
+// Pruebas del mapper puro con datos de la respuesta real de PokéAPI.
 describe('toPokemonPage', () => {
   it('mapea id, nombre e imagen desde la URL de cada resultado', () => {
     expect(toPokemonPage(responseWithNext, 0).items).toEqual([

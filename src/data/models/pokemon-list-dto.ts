@@ -1,7 +1,6 @@
-export interface PokemonListItemDto {
-  name: string;
-  url: string;
-}
+import { NamedResourceDto } from './named-resource-dto';
+
+export type PokemonListItemDto = NamedResourceDto;
 
 export interface PokemonListDto {
   count: number;
