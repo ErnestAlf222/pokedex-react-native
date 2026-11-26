@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, ScrollViewInstance, StyleSheet, Text } from 'react-native';
 import { UI_MESSAGES, colors, fontSize, sizes, spacing } from '../../core';
 import { EvolutionStage } from '../../domain';
 import { EvolutionStageItem } from './evolution-stage-item';
@@ -12,34 +12,31 @@ interface EvolutionSectionProps {
 
 const ITEM_STRIDE = sizes.evolutionItem + spacing.sm;
 
-// Calcula la posición de cada tarjeta (ancho fijo más separador) para el scroll.
-const getItemLayout = (_: unknown, index: number) => ({
-  length: sizes.evolutionItem,
-  offset: ITEM_STRIDE * index,
-  index,
-});
-
-// Espacio entre tarjetas de la fila.
-const Separator = () => <View style={styles.separator} />;
-
 // Fila horizontal con la cadena evolutiva, centrada en la etapa actual, o un aviso si no hay evoluciones.
 export const EvolutionSection = ({
   stages,
   currentId,
   onSelect,
 }: EvolutionSectionProps) => {
-  const listRef = useRef<FlatList<EvolutionStage>>(null);
+  const scrollRef = useRef<ScrollViewInstance>(null);
+  const isPositioned = useRef(false);
   const currentIndex = Math.max(
     stages.findIndex(stage => stage.id === currentId),
     0,
   );
-  const previousIndex = useRef(currentIndex);
 
-  // Desplaza la fila a la nueva etapa actual cuando cambia (el montaje ya parte de ella).
+  // Coloca la fila en la etapa actual, sin animación, al medir su contenido por primera vez.
+  const positionOnFirstLayout = () => {
+    if (!isPositioned.current) {
+      isPositioned.current = true;
+      scrollRef.current?.scrollTo({ x: ITEM_STRIDE * currentIndex, animated: false });
+    }
+  };
+
+  // Anima el desplazamiento cuando cambia la etapa actual.
   useEffect(() => {
-    if (previousIndex.current !== currentIndex) {
-      previousIndex.current = currentIndex;
-      listRef.current?.scrollToIndex({ index: currentIndex, animated: true });
+    if (isPositioned.current) {
+      scrollRef.current?.scrollTo({ x: ITEM_STRIDE * currentIndex, animated: true });
     }
   }, [currentIndex]);
 
@@ -48,27 +45,25 @@ export const EvolutionSection = ({
   }
 
   return (
-    <FlatList
-      ref={listRef}
+    <ScrollView
+      ref={scrollRef}
       horizontal
-      data={stages}
-      keyExtractor={stage => String(stage.id)}
-      getItemLayout={getItemLayout}
-      initialScrollIndex={currentIndex}
       showsHorizontalScrollIndicator={false}
-      ItemSeparatorComponent={Separator}
-      renderItem={({ item }) => (
+      contentContainerStyle={styles.list}
+      onContentSizeChange={positionOnFirstLayout}>
+      {stages.map(stage => (
         <EvolutionStageItem
-          stage={item}
-          isCurrent={item.id === currentId}
-          onPress={() => onSelect(item.id)}
+          key={stage.id}
+          stage={stage}
+          isCurrent={stage.id === currentId}
+          onPress={() => onSelect(stage.id)}
         />
-      )}
-    />
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  separator: { width: spacing.sm },
+  list: { gap: spacing.sm },
   empty: { fontSize: fontSize.body, color: colors.textSecondary },
 });

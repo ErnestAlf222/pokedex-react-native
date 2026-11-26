@@ -3,9 +3,15 @@ import {
   PokemonDetail,
   PokemonRepository,
   PokemonSummary,
+  PokemonTypeIndex,
 } from '../../domain';
 import { PokemonRemoteDataSource } from '../datasources';
-import { toPokemonDetail, toPokemonPage, toPokemonSummary } from '../mappers';
+import {
+  toPokemonDetail,
+  toPokemonPage,
+  toPokemonSummary,
+  toPokemonTypeIndex,
+} from '../mappers';
 
 // Implementación del repositorio de Pokémon sobre la fuente de datos remota.
 export class PokemonRepositoryImpl implements PokemonRepository {
@@ -36,5 +42,14 @@ export class PokemonRepositoryImpl implements PokemonRepository {
       species.evolution_chain.url,
     );
     return toPokemonDetail(pokemon, chain);
+  }
+
+  // Pide especies y tipos en paralelo; las especies definen qué ids son válidos (sin formas alternativas).
+  async getPokemonTypeIndex(): Promise<PokemonTypeIndex> {
+    const [species, types] = await Promise.all([
+      this.getAllPokemon(),
+      this.remoteDataSource.getAllTypes(),
+    ]);
+    return toPokemonTypeIndex(types, new Set(species.map(({ id }) => id)));
   }
 }
