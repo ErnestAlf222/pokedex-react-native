@@ -1,5 +1,7 @@
 import {
+  LabelMap,
   MULTIPLIER_LABELS,
+  TYPE_LABELS,
   POKEMON_NUMBER_PAD_CHAR,
   POKEMON_NUMBER_PAD_LENGTH,
   POKEMON_NUMBER_PREFIX,
@@ -25,3 +27,11 @@ export const formatSlug = (slug: string): string =>
 // Formatea un multiplicador de daño (2 → ×2, 0.25 → ×¼); si no tiene etiqueta usa el número.
 export const formatMultiplier = (multiplier: number): string =>
   MULTIPLIER_LABELS[multiplier] ?? `×${multiplier}`;
+
+// Devuelve la etiqueta de la clave en el mapa; si falta, cae al texto legible del slug.
+export const getLabel = (labels: LabelMap, key: string): string =>
+  labels[key] ?? formatSlug(key);
+
+// Etiqueta en español de un tipo de Pokémon.
+export const getTypeLabel = (type: string): string =>
+  getLabel(TYPE_LABELS, type);

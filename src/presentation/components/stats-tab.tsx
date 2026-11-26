@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import {
+  STAT_BAR_STAGGER_MS,
   STAT_LABELS,
   UI_MESSAGES,
   colors,
@@ -20,15 +21,16 @@ interface StatsTabProps {
   color: string;
 }
 
-// Pestaña "Estadísticas": barras con color por tramo, el total y el radar de los seis stats.
+// Pestaña "Estadísticas": barras escalonadas con color por tramo, el total y el radar que crece desde el centro.
 export const StatsTab = ({ stats, total, color }: StatsTabProps) => (
   <View>
-    {stats.map(({ name, value }) => (
+    {stats.map(({ name, value }, index) => (
       <StatBar
         key={name}
         label={STAT_LABELS[name] ?? formatSlug(name)}
         value={value}
         color={getStatColor(value)}
+        delayMs={index * STAT_BAR_STAGGER_MS}
       />
     ))}
     <View style={styles.total}>

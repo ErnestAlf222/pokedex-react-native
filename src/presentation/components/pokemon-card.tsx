@@ -1,12 +1,7 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import LinearGradient from 'react-native-linear-gradient';
-import Animated, {
-  FadeInDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import {
   CARD_ENTER_DURATION_MS,
   CARD_GRADIENT_END,
@@ -14,7 +9,6 @@ import {
   LIST_COLUMNS,
   PERCENT,
   POKEBALL_ICON_NAME,
-  PRESS_ANIMATION_MS,
   colors,
   effects,
   fontSize,
@@ -29,6 +23,7 @@ import {
   withAlpha,
 } from '../../core';
 import { PokemonSummary } from '../../domain';
+import { PressableScale } from './pressable-scale';
 import { TypeBadge } from './type-badge';
 
 interface PokemonCardProps {
@@ -55,63 +50,46 @@ export const PokemonCard = ({
   types = [],
   enterDelayMs,
   onPress,
-}: PokemonCardProps) => {
-  const scale = useSharedValue(1);
-  const pressStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-  const animateScale = (value: number) => () => {
-    scale.value = withTiming(value, { duration: PRESS_ANIMATION_MS });
-  };
-
-  return (
-    <Animated.View
-      style={styles.cell}
-      entering={
-        enterDelayMs === undefined
-          ? undefined
-          : FadeInDown.delay(enterDelayMs).duration(CARD_ENTER_DURATION_MS)
-      }
-    >
-      <Pressable
-        onPress={onPress}
-        onPressIn={animateScale(effects.pressedScale)}
-        onPressOut={animateScale(1)}
-      >
-        <Animated.View style={[styles.card, pressStyle]}>
-          <View style={styles.clip}>
-            <LinearGradient
-              colors={getCardColors(types)}
-              start={CARD_GRADIENT_START}
-              end={CARD_GRADIENT_END}
-              style={StyleSheet.absoluteFill}
-            />
-            <MaterialIcons
-              name={POKEBALL_ICON_NAME}
-              size={sizes.cardWatermark}
-              color={colors.textPrimary}
-              style={styles.watermark}
-            />
-          </View>
-          <Text style={styles.number}>{formatPokemonNumber(pokemon.id)}</Text>
-          <Image
-            source={{ uri: pokemon.imageUrl }}
-            style={styles.image}
-            resizeMode="contain"
-          />
-          <Text style={styles.name} numberOfLines={1}>
-            {formatSlug(pokemon.name)}
-          </Text>
-          <View style={styles.badges}>
-            {types.map(type => (
-              <TypeBadge key={type} type={type} compact />
-            ))}
-          </View>
-        </Animated.View>
-      </Pressable>
-    </Animated.View>
-  );
-};
+}: PokemonCardProps) => (
+  <Animated.View
+    style={styles.cell}
+    entering={
+      enterDelayMs === undefined
+        ? undefined
+        : FadeInDown.delay(enterDelayMs).duration(CARD_ENTER_DURATION_MS)
+    }>
+    <PressableScale onPress={onPress} style={styles.card}>
+      <View style={styles.clip}>
+        <LinearGradient
+          colors={getCardColors(types)}
+          start={CARD_GRADIENT_START}
+          end={CARD_GRADIENT_END}
+          style={StyleSheet.absoluteFill}
+        />
+        <MaterialIcons
+          name={POKEBALL_ICON_NAME}
+          size={sizes.cardWatermark}
+          color={colors.textPrimary}
+          style={styles.watermark}
+        />
+      </View>
+      <Text style={styles.number}>{formatPokemonNumber(pokemon.id)}</Text>
+      <Image
+        source={{ uri: pokemon.imageUrl }}
+        style={styles.image}
+        resizeMode="contain"
+      />
+      <Text style={styles.name} numberOfLines={1}>
+        {formatSlug(pokemon.name)}
+      </Text>
+      <View style={styles.badges}>
+        {types.map(type => (
+          <TypeBadge key={type} type={type} compact />
+        ))}
+      </View>
+    </PressableScale>
+  </Animated.View>
+);
 
 const styles = StyleSheet.create({
   cell: { width: `${PERCENT / LIST_COLUMNS}%`, padding: spacing.xs },

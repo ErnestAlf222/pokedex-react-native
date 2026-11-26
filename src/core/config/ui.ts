@@ -39,9 +39,36 @@ export const DETAIL_TABS = ['about', 'stats', 'evolutions', 'moves'] as const;
 export type DetailTab = (typeof DETAIL_TABS)[number];
 export const DEFAULT_DETAIL_TAB: DetailTab = 'about';
 export const TAB_FADE_DURATION_MS = 200;
-export const TAB_INDICATOR_DURATION_MS = 250;
 
 export const SCROLL_EVENT_THROTTLE = 16;
+export const SPRING_CONFIG = { damping: 14, stiffness: 140, mass: 1 } as const;
+export const ARTWORK_ENTRY_DELAY_MS = 120;
+export const TITLE_ENTRY_DELAY_MS = 200;
+export const TITLE_ENTRY_STAGGER_MS = 70;
+export const SHEET_ENTRY_DELAY_MS = 100;
+export const SECTION_ENTER_DELAY_MS = 70;
+export const SECTION_ENTER_DURATION_MS = 300;
+export const MAX_STAGGERED_ITEMS = 8;
+export const GRADIENT_TRANSITION_MS = 450;
+export const TAB_SWIPE_ACTIVE_OFFSET_X = 16;
+export const TAB_SWIPE_FAIL_OFFSET_Y = 12;
+export const TAB_SWIPE_COMMIT_DISTANCE = 60;
+export const TAB_SWIPE_COMMIT_VELOCITY = 600;
+export const TAB_SWIPE_EDGE_RESISTANCE = 0.2;
+export const RADAR_GROW_DURATION_MS = 700;
+export const STAT_BAR_STAGGER_MS = 80;
+export const VIBRATION_MS = 12;
+export const HERO_GLOW_ID = 'heroGlow';
+export const HERO_SHADOW_ID = 'heroShadow';
+export const DETAIL_ICONS = {
+  height: 'height',
+  weight: 'fitness-center',
+  abilities: 'auto-awesome',
+  gender: 'wc',
+  eggGroups: 'egg',
+  weaknesses: 'shield',
+} as const;
+export type DetailIconName = (typeof DETAIL_ICONS)[keyof typeof DETAIL_ICONS];
 export const INFO_COLUMNS = 2;
 export const MOVE_SEPARATOR = ' · ';
 

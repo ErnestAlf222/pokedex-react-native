@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import Animated, {
   Easing,
+  SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
-  withRepeat,
   withTiming,
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -13,32 +13,24 @@ import {
   FULL_TURN_DEGREES,
   HALF_TURN_DEGREES,
   HERO_FLIP_DURATION_MS,
-  HERO_FLOAT_DURATION_MS,
-  INFINITE_REPETITIONS,
   sizes,
+  vibrate,
 } from '../../core';
 
 interface HeroImageProps {
   imageUrl: string;
   shinyImageUrl: string;
+  floatOffset: SharedValue<number>;
 }
 
-// Imagen del héroe que flota y, al tocarla, gira 360° alternando con su versión shiny.
-export const HeroImage = ({ imageUrl, shinyImageUrl }: HeroImageProps) => {
+// Imagen del héroe que flota (valor compartido con su sombra) y, al tocarla, gira 360° alternando con su versión shiny.
+export const HeroImage = ({
+  imageUrl,
+  shinyImageUrl,
+  floatOffset,
+}: HeroImageProps) => {
   const [showShiny, setShowShiny] = useState(false);
-  const offset = useSharedValue(0);
   const rotation = useSharedValue(0);
-
-  useEffect(() => {
-    offset.value = withRepeat(
-      withTiming(-sizes.floatDistance, {
-        duration: HERO_FLOAT_DURATION_MS,
-        easing: Easing.inOut(Easing.ease),
-      }),
-      INFINITE_REPETITIONS,
-      true,
-    );
-  }, [offset]);
 
   // Alterna entre la imagen normal y la shiny.
   const toggleShiny = () => setShowShiny(previous => !previous);
@@ -53,11 +45,12 @@ export const HeroImage = ({ imageUrl, shinyImageUrl }: HeroImageProps) => {
     },
   );
 
-  // Inicia el giro completo, ignorando toques mientras ya está girando.
+  // Inicia el giro completo con una vibración corta, ignorando toques mientras ya está girando.
   const flip = () => {
     if (rotation.value > 0 && rotation.value < FULL_TURN_DEGREES) {
       return;
     }
+    vibrate();
     rotation.value = 0;
     rotation.value = withTiming(FULL_TURN_DEGREES, {
       duration: HERO_FLIP_DURATION_MS,
@@ -68,7 +61,7 @@ export const HeroImage = ({ imageUrl, shinyImageUrl }: HeroImageProps) => {
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       { perspective: sizes.heroPerspective },
-      { translateY: offset.value },
+      { translateY: floatOffset.value },
       { rotateY: `${rotation.value}deg` },
     ],
   }));

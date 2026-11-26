@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import {
   ALL_TYPES_VALUE,
   UI_MESSAGES,
@@ -6,13 +6,14 @@ import {
   effects,
   fontSize,
   fontWeight,
-  formatSlug,
   getTypeColor,
+  getTypeLabel,
   radius,
   sizes,
   spacing,
   withAlpha,
 } from '../../core';
+import { PressableScale } from './pressable-scale';
 
 interface TypeFilterChipsProps {
   types: string[];
@@ -40,10 +41,11 @@ export const TypeFilterChips = ({
       const isActive = type === selected;
       const chipColor = getChipColor(type);
       return (
-        <Pressable
+        <PressableScale
           key={type}
           accessibilityRole="button"
           accessibilityState={{ selected: isActive }}
+          scaleTo={effects.chipPressedScale}
           onPress={() => onSelect(type)}
           style={[
             styles.chip,
@@ -58,9 +60,11 @@ export const TypeFilterChips = ({
               styles.label,
               { color: isActive ? colors.onGradient : colors.textPrimary },
             ]}>
-            {type === ALL_TYPES_VALUE ? UI_MESSAGES.allTypes : formatSlug(type)}
+            {type === ALL_TYPES_VALUE
+              ? UI_MESSAGES.allTypes
+              : getTypeLabel(type)}
           </Text>
-        </Pressable>
+        </PressableScale>
       );
     })}
   </ScrollView>

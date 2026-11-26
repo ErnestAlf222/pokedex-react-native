@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 import {
   colors,
+  effects,
   fontSize,
   fontWeight,
   formatMultiplier,
   spacing,
 } from '../../core';
 import { TypeMultiplier } from '../../domain';
+import { PressableScale } from './pressable-scale';
 import { TypeBadge } from './type-badge';
 
 interface EffectivenessGroupProps {
@@ -26,14 +28,17 @@ export const EffectivenessGroup = ({
       <Text style={styles.title}>{title}</Text>
       <View style={styles.items}>
         {items.map(({ type, multiplier }) => (
-          <View key={type} style={styles.item}>
+          <PressableScale
+            key={type}
+            scaleTo={effects.chipPressedScale}
+            style={styles.item}>
             <TypeBadge type={type} />
             {showMultiplier && (
               <Text style={styles.multiplier}>
                 {formatMultiplier(multiplier)}
               </Text>
             )}
-          </View>
+          </PressableScale>
         ))}
       </View>
     </View>

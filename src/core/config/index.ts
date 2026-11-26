@@ -1,6 +1,7 @@
 export * from './api';
 export * from './cache';
 export * from './env';
+export * from './labels';
 export * from './language';
 export * from './messages';
 export * from './pokemon-rules';

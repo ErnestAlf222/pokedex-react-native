@@ -1,6 +1,6 @@
 import { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { formatSlug, getQueryViewState, noResultsMessage } from '../../core';
+import { getQueryViewState, getTypeLabel, noResultsMessage } from '../../core';
 import {
   PokemonSummary,
   PokemonTypeIndex,
@@ -57,7 +57,7 @@ export const PokemonSearchResults = ({
         <EmptyView
           message={noResultsMessage(
             query.trim(),
-            typeName === '' ? '' : formatSlug(typeName),
+            typeName === '' ? '' : getTypeLabel(typeName),
           )}
         />
       }

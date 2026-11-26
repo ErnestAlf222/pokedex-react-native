@@ -19,6 +19,7 @@ import {
 } from '../../core';
 import {
   BackButton,
+  CompactBar,
   PokemonDetailSheet,
   PokemonHero,
   QueryFallbackView,
@@ -95,7 +96,6 @@ export const PokemonDetailScreen = ({
           shinyImageUrl={data.shinyImageUrl}
           gradientColors={gradientColors}
           scrollY={scrollY}
-          onBack={goBack}
         />
         <PokemonDetailSheet
           pokemon={data}
@@ -105,6 +105,13 @@ export const PokemonDetailScreen = ({
           onSelectStage={openStage}
         />
       </Animated.ScrollView>
+      <CompactBar
+        name={formatSlug(data.name)}
+        number={formatPokemonNumber(data.id)}
+        gradientColors={gradientColors}
+        scrollY={scrollY}
+        onBack={goBack}
+      />
     </Animated.View>
   );
 };

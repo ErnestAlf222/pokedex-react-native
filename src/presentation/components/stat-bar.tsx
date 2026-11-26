@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withTiming,
 } from 'react-native-reanimated';
 import {
@@ -21,17 +22,19 @@ interface StatBarProps {
   label: string;
   value: number;
   color: string;
+  delayMs?: number;
 }
 
-// Fila de stat con etiqueta, valor y una barra que se llena al aparecer.
-export const StatBar = ({ label, value, color }: StatBarProps) => {
+// Fila de stat con etiqueta, valor y una barra que se llena al aparecer, tras el retraso indicado.
+export const StatBar = ({ label, value, color, delayMs = 0 }: StatBarProps) => {
   const progress = useSharedValue(0);
 
   useEffect(() => {
-    progress.value = withTiming(getStatRatio(value), {
-      duration: STAT_BAR_DURATION_MS,
-    });
-  }, [progress, value]);
+    progress.value = withDelay(
+      delayMs,
+      withTiming(getStatRatio(value), { duration: STAT_BAR_DURATION_MS }),
+    );
+  }, [delayMs, progress, value]);
 
   const fillStyle = useAnimatedStyle(() => ({
     width: `${progress.value * PERCENT}%`,

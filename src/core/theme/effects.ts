@@ -11,4 +11,13 @@ export const effects = {
   heroNumberOpacity: 0.8,
   radarFillOpacity: 0.35,
   pressedScale: 0.96,
+  chipPressedScale: 0.94,
+  heroShadowOpacity: 0.4,
+  heroShadowMinScale: 0.7,
+  heroShadowMinOpacity: 0.15,
+  heroGlowOpacity: 0.6,
+  glowLightenFactor: 0.55,
+  entryScaleFrom: 0.8,
+  radarStartScale: 0,
+  tabDragFadeMin: 0.4,
 } as const;

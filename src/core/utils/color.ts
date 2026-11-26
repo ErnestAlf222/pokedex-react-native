@@ -3,12 +3,27 @@ import { effects, fallbackTypeColor, statColors, typeColors } from '../theme';
 
 const HEX_RADIX = 16;
 const CHANNEL_LENGTH = 2;
+const MAX_CHANNEL = 255;
 const CHANNEL_PATTERN = /.{2}/g;
 
 // Oscurece un color #RRGGBB multiplicando cada canal por (1 - factor).
 export const darkenColor = (hex: string, factor: number): string => {
   const channels = (hex.slice(1).match(CHANNEL_PATTERN) ?? []).map(channel =>
     Math.round(parseInt(channel, HEX_RADIX) * (1 - factor))
+      .toString(HEX_RADIX)
+      .padStart(CHANNEL_LENGTH, '0')
+      .toUpperCase(),
+  );
+  return `#${channels.join('')}`;
+};
+
+// Aclara un color #RRGGBB acercando cada canal al blanco según el factor (0 = igual, 1 = blanco).
+export const lightenColor = (hex: string, factor: number): string => {
+  const channels = (hex.slice(1).match(CHANNEL_PATTERN) ?? []).map(channel =>
+    Math.round(
+      parseInt(channel, HEX_RADIX) +
+        (MAX_CHANNEL - parseInt(channel, HEX_RADIX)) * factor,
+    )
       .toString(HEX_RADIX)
       .padStart(CHANNEL_LENGTH, '0')
       .toUpperCase(),

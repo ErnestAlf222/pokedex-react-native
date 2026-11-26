@@ -1,5 +1,6 @@
 export * from './color';
 export * from './error-message';
+export * from './feedback';
 export * from './format';
 export * from './localized';
 export * from './network';

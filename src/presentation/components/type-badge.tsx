@@ -4,8 +4,8 @@ import {
   effects,
   fontSize,
   fontWeight,
-  formatSlug,
   getTypeColor,
+  getTypeLabel,
   radius,
   spacing,
   withAlpha,
@@ -34,7 +34,7 @@ export const TypeBadge = ({
       },
     ]}>
     <Text style={[styles.label, compact && styles.labelCompact]}>
-      {formatSlug(type)}
+      {getTypeLabel(type)}
     </Text>
   </View>
 );

@@ -8,6 +8,7 @@ import {
   spacing,
   withAlpha,
 } from '../../core';
+import { PressableScale } from './pressable-scale';
 
 interface LabelChipProps {
   label: string;
@@ -20,9 +21,10 @@ interface LabelChipListProps {
   color: string;
 }
 
-// Chip con texto: tinte suave del color, o relleno completo con texto blanco si es filled.
+// Chip con texto que reacciona al presionar: tinte suave del color, o relleno completo con texto blanco si es filled.
 export const LabelChip = ({ label, color, filled = false }: LabelChipProps) => (
-  <View
+  <PressableScale
+    scaleTo={effects.chipPressedScale}
     style={[
       styles.chip,
       {
@@ -32,7 +34,7 @@ export const LabelChip = ({ label, color, filled = false }: LabelChipProps) => (
       },
     ]}>
     <Text style={[styles.label, filled && styles.labelFilled]}>{label}</Text>
-  </View>
+  </PressableScale>
 );
 
 // Fila de chips que salta de línea cuando no caben.

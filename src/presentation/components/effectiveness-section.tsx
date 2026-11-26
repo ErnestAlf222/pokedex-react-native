@@ -1,5 +1,6 @@
 import { StyleSheet, Text } from 'react-native';
 import {
+  DETAIL_ICONS,
   UI_MESSAGES,
   colors,
   fontSize,
@@ -13,12 +14,14 @@ import { PokeballLoader } from './pokeball-loader';
 
 interface EffectivenessSectionProps {
   typeNames: string[];
+  color: string;
   enabled: boolean;
 }
 
 // Debilidades, resistencias e inmunidades del Pokémon; sin red y sin dato muestra un aviso discreto sin bloquear el resto.
 export const EffectivenessSection = ({
   typeNames,
+  color,
   enabled,
 }: EffectivenessSectionProps) => {
   const query = usePokemonEffectiveness(typeNames, enabled);
@@ -26,7 +29,10 @@ export const EffectivenessSection = ({
   const { data } = query;
 
   return (
-    <DetailSection title={UI_MESSAGES.weaknesses}>
+    <DetailSection
+      title={UI_MESSAGES.weaknesses}
+      icon={DETAIL_ICONS.weaknesses}
+      color={color}>
       {viewState === 'content' && data ? (
         <>
           <EffectivenessGroup

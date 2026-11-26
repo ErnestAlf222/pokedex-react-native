@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { ScrollView, ScrollViewInstance, StyleSheet, Text } from 'react-native';
+import { ScrollViewInstance, StyleSheet, Text } from 'react-native';
+import { PanGesture, ScrollView } from 'react-native-gesture-handler';
 import { UI_MESSAGES, colors, fontSize, sizes, spacing } from '../../core';
 import { EvolutionStage } from '../../domain';
 import { EvolutionStageItem } from './evolution-stage-item';
@@ -8,15 +9,17 @@ interface EvolutionSectionProps {
   stages: EvolutionStage[];
   currentId: number;
   onSelect: (id: number) => void;
+  blocksGesture?: PanGesture;
 }
 
 const ITEM_STRIDE = sizes.evolutionItem + spacing.sm;
 
-// Fila horizontal con la cadena evolutiva, centrada en la etapa actual, o un aviso si no hay evoluciones.
+// Fila horizontal con la cadena evolutiva, centrada en la etapa actual; su scroll bloquea el deslizado entre pestañas.
 export const EvolutionSection = ({
   stages,
   currentId,
   onSelect,
+  blocksGesture,
 }: EvolutionSectionProps) => {
   const scrollRef = useRef<ScrollViewInstance>(null);
   const isPositioned = useRef(false);
@@ -29,14 +32,20 @@ export const EvolutionSection = ({
   const positionOnFirstLayout = () => {
     if (!isPositioned.current) {
       isPositioned.current = true;
-      scrollRef.current?.scrollTo({ x: ITEM_STRIDE * currentIndex, animated: false });
+      scrollRef.current?.scrollTo({
+        x: ITEM_STRIDE * currentIndex,
+        animated: false,
+      });
     }
   };
 
   // Anima el desplazamiento cuando cambia la etapa actual.
   useEffect(() => {
     if (isPositioned.current) {
-      scrollRef.current?.scrollTo({ x: ITEM_STRIDE * currentIndex, animated: true });
+      scrollRef.current?.scrollTo({
+        x: ITEM_STRIDE * currentIndex,
+        animated: true,
+      });
     }
   }, [currentIndex]);
 
@@ -48,6 +57,7 @@ export const EvolutionSection = ({
     <ScrollView
       ref={scrollRef}
       horizontal
+      block={blocksGesture}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.list}
       onContentSizeChange={positionOnFirstLayout}>

@@ -260,7 +260,7 @@ describe('PokemonListScreen con el filtro por tipo', () => {
     expect(renderer.root.findAllByType(PokemonCard)).toHaveLength(0);
     const message = renderer.root.findByType(EmptyView).props.message;
     expect(message).toContain('char');
-    expect(message).toContain('Water');
+    expect(message).toContain('Agua');
   });
 
   it('oculta los chips y mantiene el listado si no hay índice de tipos', async () => {

@@ -9,10 +9,10 @@ import {
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
+  withSpring,
 } from 'react-native-reanimated';
 import {
-  TAB_INDICATOR_DURATION_MS,
+  SPRING_CONFIG,
   colors,
   fontSize,
   fontWeight,
@@ -43,9 +43,7 @@ export const TabBar = <T extends string>({
 
   // Lleva el indicador a la pestaña elegida.
   useEffect(() => {
-    offset.value = withTiming(tabs.indexOf(selected) * tabWidth, {
-      duration: TAB_INDICATOR_DURATION_MS,
-    });
+    offset.value = withSpring(tabs.indexOf(selected) * tabWidth, SPRING_CONFIG);
   }, [offset, selected, tabWidth, tabs]);
 
   const indicatorStyle = useAnimatedStyle(() => ({
