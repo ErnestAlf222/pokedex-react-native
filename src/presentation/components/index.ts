@@ -1,3 +1,4 @@
+export * from './back-button';
 export * from './empty-view';
 export * from './error-view';
 export * from './info-item';

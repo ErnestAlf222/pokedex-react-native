@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import {
-  capitalize,
   colors,
   fontSize,
   fontWeight,
+  formatSlug,
   getTypeColor,
   radius,
   spacing,
@@ -16,7 +16,7 @@ interface TypeBadgeProps {
 // Etiqueta con el nombre del tipo sobre el color de ese tipo.
 export const TypeBadge = ({ type }: TypeBadgeProps) => (
   <View style={[styles.badge, { backgroundColor: getTypeColor(type) }]}>
-    <Text style={styles.label}>{capitalize(type)}</Text>
+    <Text style={styles.label}>{formatSlug(type)}</Text>
   </View>
 );
 

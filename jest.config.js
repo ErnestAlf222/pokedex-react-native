@@ -7,7 +7,8 @@ module.exports = {
       '@react-native/jest-preset/jest/assetFileTransformer.js',
     ),
   },
+  // Un solo patrón: transforma todo react-native*, @react-native* y @react-navigation (ESM).
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-native-vector-icons|@react-navigation|react-native-gesture-handler|react-native-reanimated|react-native-worklets)/)',
+    'node_modules/(?!((jest-)?react-native[^/]*|@react-native[^/]*|@react-navigation)/)',
   ],
 };

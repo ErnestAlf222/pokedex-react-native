@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { useEffect } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, {
   Easing,
@@ -11,17 +11,16 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
-  BACK_ICON_NAME,
   HERO_FLOAT_DURATION_MS,
   INFINITE_REPETITIONS,
   POKEBALL_ICON_NAME,
-  UI_MESSAGES,
   colors,
   effects,
   radius,
   sizes,
   spacing,
 } from '../../core';
+import { BackButton } from './back-button';
 
 interface PokemonHeroProps {
   imageUrl: string;
@@ -63,16 +62,7 @@ export const PokemonHero = ({
         color={colors.onGradient}
         style={styles.watermark}
       />
-      <Pressable
-        accessibilityLabel={UI_MESSAGES.back}
-        onPress={onBack}
-        style={[styles.backButton, { top: insets.top + spacing.sm }]}>
-        <MaterialIcons
-          name={BACK_ICON_NAME}
-          size={sizes.backIcon}
-          color={colors.onGradient}
-        />
-      </Pressable>
+      <BackButton onPress={onBack} />
       <Animated.Image
         source={{ uri: imageUrl }}
         style={[styles.image, floatStyle]}
@@ -95,16 +85,6 @@ const styles = StyleSheet.create({
     right: -spacing.lg,
     bottom: -spacing.lg,
     opacity: effects.watermarkOpacity,
-  },
-  backButton: {
-    position: 'absolute',
-    left: spacing.md,
-    width: sizes.iconButton,
-    height: sizes.iconButton,
-    borderRadius: radius.full,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.translucent,
   },
   image: { width: sizes.heroImage, height: sizes.heroImage },
 });

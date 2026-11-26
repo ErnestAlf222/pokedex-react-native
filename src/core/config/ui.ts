@@ -1,6 +1,8 @@
 export const LIST_COLUMNS = 2;
 export const END_REACHED_THRESHOLD = 0.5;
 export const LIST_SEPARATOR = ', ';
+export const SLUG_SEPARATOR = '-';
+export const WORD_SEPARATOR = ' ';
 
 export const POKEMON_NUMBER_PREFIX = '#';
 export const POKEMON_NUMBER_PAD_LENGTH = 3;

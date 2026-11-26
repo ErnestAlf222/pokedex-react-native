@@ -3,12 +3,12 @@ import {
   LIST_SEPARATOR,
   UI_MESSAGES,
   UNIT_LABELS,
-  capitalize,
   colors,
   decimetersToMeters,
   fontSize,
   fontWeight,
   formatPokemonNumber,
+  formatSlug,
   getErrorMessage,
   getGradientColors,
   hectogramsToKilograms,
@@ -16,6 +16,7 @@ import {
   spacing,
 } from '../../core';
 import {
+  BackButton,
   ErrorView,
   InfoItem,
   PokeballLoader,
@@ -34,17 +35,24 @@ export const PokemonDetailScreen = ({
     route.params.id,
   );
 
-  if (isPending) {
-    return (
-      <View style={layout.center}>
-        <PokeballLoader />
-      </View>
-    );
-  }
+  // Vuelve a la pantalla anterior sin pasar argumentos del evento.
+  const goBack = () => navigation.goBack();
 
-  if (!data) {
+  if (isPending || !data) {
     return (
-      <ErrorView message={getErrorMessage(error)} onRetry={() => refetch()} />
+      <View style={styles.screen}>
+        {isPending ? (
+          <View style={layout.center}>
+            <PokeballLoader />
+          </View>
+        ) : (
+          <ErrorView
+            message={getErrorMessage(error)}
+            onRetry={() => refetch()}
+          />
+        )}
+        <BackButton onPress={goBack} />
+      </View>
     );
   }
 
@@ -53,11 +61,11 @@ export const PokemonDetailScreen = ({
       <PokemonHero
         imageUrl={data.imageUrl}
         gradientColors={getGradientColors(data.types)}
-        onBack={navigation.goBack}
+        onBack={goBack}
       />
       <View style={styles.body}>
         <Text style={styles.number}>{formatPokemonNumber(data.id)}</Text>
-        <Text style={styles.name}>{capitalize(data.name)}</Text>
+        <Text style={styles.name}>{formatSlug(data.name)}</Text>
         <View style={styles.badges}>
           {data.types.map(type => (
             <TypeBadge key={type} type={type} />
@@ -75,7 +83,7 @@ export const PokemonDetailScreen = ({
         </View>
         <InfoItem
           label={UI_MESSAGES.abilities}
-          value={data.abilities.map(capitalize).join(LIST_SEPARATOR)}
+          value={data.abilities.map(formatSlug).join(LIST_SEPARATOR)}
         />
       </View>
     </ScrollView>

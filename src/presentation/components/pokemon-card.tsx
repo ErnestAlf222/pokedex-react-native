@@ -1,11 +1,11 @@
 import { Image, Pressable, StyleSheet, Text } from 'react-native';
 import {
   LIST_COLUMNS,
-  capitalize,
   colors,
   fontSize,
   fontWeight,
   formatPokemonNumber,
+  formatSlug,
   radius,
   sizes,
   spacing,
@@ -26,7 +26,7 @@ export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => (
       resizeMode="contain"
     />
     <Text style={styles.number}>{formatPokemonNumber(pokemon.id)}</Text>
-    <Text style={styles.name}>{capitalize(pokemon.name)}</Text>
+    <Text style={styles.name}>{formatSlug(pokemon.name)}</Text>
   </Pressable>
 );
 
