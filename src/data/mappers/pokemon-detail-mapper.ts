@@ -4,13 +4,13 @@ import { EvolutionChainDto, PokemonDto } from '../models';
 import { toEvolutionStages } from './evolution-chain-mapper';
 import { buildImageUrl } from './pokemon-mapper';
 
-// Combina el Pokémon y su cadena evolutiva en un PokemonDetail de dominio.
+// Combina el Pokémon y su cadena evolutiva en un PokemonDetail; el nombre es el de la especie, igual que en el listado.
 export const toPokemonDetail = (
   pokemon: PokemonDto,
   chain: EvolutionChainDto,
 ): PokemonDetail => ({
   id: pokemon.id,
-  name: pokemon.name,
+  name: pokemon.species.name,
   imageUrl: buildImageUrl(pokemon.id),
   shinyImageUrl: buildImageUrl(pokemon.id, POKEMON_SHINY_IMAGE_URL_TEMPLATE),
   types: pokemon.types.map(({ type }) => type.name),

@@ -27,6 +27,23 @@ describe('toPokemonDetail', () => {
     });
   });
 
+  it('usa el nombre de la especie y no el de la forma (Deoxys)', () => {
+    const deoxys = toPokemonDetail(
+      {
+        ...bulbasaurDto,
+        id: 386,
+        name: 'deoxys-normal',
+        species: {
+          name: 'deoxys',
+          url: 'https://pokeapi.co/api/v2/pokemon-species/386/',
+        },
+      },
+      bulbasaurChainDto,
+    );
+
+    expect(deoxys.name).toBe('deoxys');
+  });
+
   it('mapea los tipos y las habilidades', () => {
     expect(detail.types).toEqual(['grass', 'poison']);
     expect(detail.abilities).toEqual(['overgrow', 'chlorophyll']);

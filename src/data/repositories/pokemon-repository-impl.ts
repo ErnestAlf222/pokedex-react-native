@@ -5,7 +5,7 @@ import {
   PokemonSummary,
 } from '../../domain';
 import { PokemonRemoteDataSource } from '../datasources';
-import { toPokemonDetail, toPokemonPage } from '../mappers';
+import { toPokemonDetail, toPokemonPage, toPokemonSummary } from '../mappers';
 
 // Implementación del repositorio de Pokémon sobre la fuente de datos remota.
 export class PokemonRepositoryImpl implements PokemonRepository {
@@ -18,6 +18,12 @@ export class PokemonRepositoryImpl implements PokemonRepository {
   ): Promise<Page<PokemonSummary>> {
     const dto = await this.remoteDataSource.getPokemonList(offset, limit);
     return toPokemonPage(dto, offset);
+  }
+
+  // Obtiene la lista completa de especies y la mapea a resúmenes de dominio.
+  async getAllPokemon(): Promise<PokemonSummary[]> {
+    const dto = await this.remoteDataSource.getAllPokemon();
+    return dto.results.map(toPokemonSummary);
   }
 
   // Pide Pokémon y especie en paralelo, luego la cadena, y arma el detalle.

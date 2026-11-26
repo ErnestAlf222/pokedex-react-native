@@ -1,6 +1,8 @@
 import {
+  INITIAL_OFFSET,
   POKEAPI_BASE_URL,
   POKEMON_ENDPOINT,
+  POKEMON_FULL_LIST_LIMIT,
   POKEMON_QUERY_PARAMS,
   POKEMON_SPECIES_ENDPOINT,
   getJson,
@@ -26,6 +28,11 @@ export class PokemonRemoteDataSource {
     return getJson<PokemonListDto>(
       pokeApiUrl(`${POKEMON_SPECIES_ENDPOINT}?${query.toString()}`),
     );
+  }
+
+  // Pide la lista completa de especies en una sola respuesta.
+  getAllPokemon(): Promise<PokemonListDto> {
+    return this.getPokemonList(INITIAL_OFFSET, POKEMON_FULL_LIST_LIMIT);
   }
 
   // Pide los datos básicos de un Pokémon por id.
