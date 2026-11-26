@@ -4,5 +4,6 @@ export * from './format';
 export * from './localized';
 export * from './network';
 export * from './query-state';
+export * from './radar';
 export * from './stats';
 export * from './units';

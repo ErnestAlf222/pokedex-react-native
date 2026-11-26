@@ -35,6 +35,20 @@ export const HALF_TURN_DEGREES = 180;
 export const HERO_FLIP_DURATION_MS = 800;
 export const PLACEHOLDER_FADE_DURATION_MS = 250;
 
+export const DETAIL_TABS = ['about', 'stats', 'evolutions', 'moves'] as const;
+export type DetailTab = (typeof DETAIL_TABS)[number];
+export const DEFAULT_DETAIL_TAB: DetailTab = 'about';
+export const TAB_FADE_DURATION_MS = 200;
+export const TAB_INDICATOR_DURATION_MS = 250;
+
+export const SCROLL_EVENT_THROTTLE = 16;
+export const INFO_COLUMNS = 2;
+export const MOVE_SEPARATOR = ' · ';
+
+export const STAT_LEVEL_THRESHOLDS = { medium: 50, high: 90 } as const;
+export const RADAR_LEVELS = 4;
+export const RADAR_ANCHOR_TOLERANCE = 1;
+
 export const MAX_STAT_VALUE = 255;
 export const STAT_BAR_DURATION_MS = 600;
 export const PERCENT = 100;

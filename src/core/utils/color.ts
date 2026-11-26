@@ -1,4 +1,5 @@
-import { effects, fallbackTypeColor, typeColors } from '../theme';
+import { STAT_LEVEL_THRESHOLDS } from '../config';
+import { effects, fallbackTypeColor, statColors, typeColors } from '../theme';
 
 const HEX_RADIX = 16;
 const CHANNEL_LENGTH = 2;
@@ -17,9 +18,9 @@ export const darkenColor = (hex: string, factor: number): string => {
 
 // Convierte un color #RRGGBB en rgba con la opacidad indicada.
 export const withAlpha = (hex: string, alpha: number): string => {
-  const [red = 0, green = 0, blue = 0] = (hex.slice(1).match(CHANNEL_PATTERN) ?? []).map(
-    channel => parseInt(channel, HEX_RADIX),
-  );
+  const [red = 0, green = 0, blue = 0] = (
+    hex.slice(1).match(CHANNEL_PATTERN) ?? []
+  ).map(channel => parseInt(channel, HEX_RADIX));
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 };
 
@@ -31,4 +32,14 @@ export const getTypeColor = (type: string): string =>
 export const getGradientColors = (types: string[]): [string, string] => {
   const [first = fallbackTypeColor, second] = types.map(getTypeColor);
   return [first, second ?? darkenColor(first, effects.darkenFactor)];
+};
+
+// Color de una barra de stat según su tramo: bajo, medio o alto.
+export const getStatColor = (value: number): string => {
+  if (value >= STAT_LEVEL_THRESHOLDS.high) {
+    return statColors.high;
+  }
+  return value >= STAT_LEVEL_THRESHOLDS.medium
+    ? statColors.medium
+    : statColors.low;
 };

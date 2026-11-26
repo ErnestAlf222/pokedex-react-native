@@ -1,3 +1,5 @@
+import { DetailTab } from './ui';
+
 export const UI_MESSAGES = {
   listTitle: 'Pokédex',
   retry: 'Reintentar',
@@ -6,15 +8,49 @@ export const UI_MESSAGES = {
   height: 'Altura',
   weight: 'Peso',
   abilities: 'Habilidades',
-  stats: 'Estadísticas',
-  evolutions: 'Evoluciones',
   noEvolutions: 'Este Pokémon no tiene evoluciones',
   searchPlaceholder: 'Buscar por nombre o número',
   clearSearch: 'Limpiar búsqueda',
   offline: 'Sin conexión',
   backOnline: 'Conexión restablecida',
   allTypes: 'Todos',
+  captureRate: 'Ratio de captura',
+  gender: 'Género',
+  female: 'Hembra',
+  male: 'Macho',
+  noGender: 'Sin género',
+  eggGroups: 'Grupos huevo',
+  habitat: 'Hábitat',
+  baseHappiness: 'Felicidad base',
+  growthRate: 'Tasa de crecimiento',
+  baseExperience: 'Experiencia base',
+  legendary: 'Legendario',
+  mythical: 'Mítico',
+  baby: 'Bebé',
+  weaknesses: 'Debilidades',
+  weakTo: 'Débil a',
+  resists: 'Resiste',
+  immuneTo: 'Inmune',
+  effectivenessUnavailable: 'Debilidades no disponibles sin conexión',
+  total: 'Total',
+  noMoves: 'Sin movimientos por nivel',
+  level: 'Nivel',
 } as const;
+
+export const DETAIL_TAB_LABELS: Record<DetailTab, string> = {
+  about: 'Acerca de',
+  stats: 'Estadísticas',
+  evolutions: 'Evoluciones',
+  moves: 'Movimientos',
+};
+
+// Etiqueta del multiplicador de daño por su valor numérico.
+export const MULTIPLIER_LABELS: Record<number, string> = {
+  4: '×4',
+  2: '×2',
+  0.5: '×½',
+  0.25: '×¼',
+};
 
 // Mensaje sin coincidencias, incluyendo el texto buscado y el tipo elegido si los hay.
 export const noResultsMessage = (query: string, type: string): string => {
@@ -37,6 +73,7 @@ export const STAT_LABELS: Record<string, string> = {
 export const UNIT_LABELS = {
   meter: 'm',
   kilogram: 'kg',
+  percent: '%',
 } as const;
 
 export const ERROR_MESSAGES = {

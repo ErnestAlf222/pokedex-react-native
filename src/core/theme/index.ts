@@ -1,6 +1,7 @@
 export * from './colors';
 export * from './effects';
 export * from './layout';
+export * from './parallax';
 export * from './pokemon-types';
 export * from './shadows';
 export * from './sizes';

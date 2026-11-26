@@ -66,6 +66,8 @@ const styles = StyleSheet.create({
     fontSize: fontSize.caption,
     fontWeight: fontWeight.bold,
     color: colors.textPrimary,
+    textAlign: 'right',
+    paddingRight: spacing.sm,
   },
   track: {
     flex: 1,

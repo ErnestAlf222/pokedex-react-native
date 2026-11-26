@@ -73,6 +73,15 @@ const flushQuery = () =>
     await new Promise<void>(resolve => setTimeout(resolve, 0));
   });
 
+const mounted: ReactTestRenderer.ReactTestRenderer[] = [];
+
+// Desmonta las pantallas montadas para que los timers internos de la lista no disparen tras la prueba.
+afterEach(async () => {
+  await ReactTestRenderer.act(async () => {
+    mounted.splice(0).forEach(renderer => renderer.unmount());
+  });
+});
+
 // Monta la pantalla con un QueryClient sin reintentos ni timers de caché.
 const renderScreen = async () => {
   const queryClient = new QueryClient({
@@ -86,6 +95,7 @@ const renderScreen = async () => {
       </QueryClientProvider>,
     );
   });
+  mounted.push(renderer);
   await flushQuery();
   return renderer;
 };

@@ -6,5 +6,9 @@ export const effects = {
   cardWatermarkOpacity: 0.14,
   cardNumberOpacity: 0.45,
   chipInactiveOpacity: 0.12,
+  softTintOpacity: 0.15,
+  glassOpacity: 0.25,
+  heroNumberOpacity: 0.8,
+  radarFillOpacity: 0.35,
   pressedScale: 0.96,
 } as const;

@@ -1,47 +1,32 @@
-import { useEffect, useRef } from 'react';
-import {
-  ScrollView,
-  ScrollViewInstance,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
+  useAnimatedRef,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import {
-  LIST_SEPARATOR,
   PLACEHOLDER_FADE_DURATION_MS,
-  STAT_LABELS,
-  UI_MESSAGES,
-  UNIT_LABELS,
+  SCROLL_EVENT_THROTTLE,
   colors,
-  decimetersToMeters,
   effects,
-  fontSize,
-  fontWeight,
   formatPokemonNumber,
   formatSlug,
   getGradientColors,
   getQueryViewState,
-  hectogramsToKilograms,
-  spacing,
 } from '../../core';
 import {
   BackButton,
-  EvolutionSection,
-  InfoItem,
+  PokemonDetailSheet,
   PokemonHero,
   QueryFallbackView,
-  StatBar,
-  TypeBadge,
 } from '../components';
 import { usePokemonDetail } from '../hooks';
 import { PokemonDetailScreenProps } from '../navigation';
 
-// Pantalla de detalle: encabezado, datos básicos, stats y evoluciones; se reutiliza al elegir una etapa.
+// Pantalla de detalle: héroe con parallax y hoja de pestañas; se reutiliza al elegir una etapa.
 export const PokemonDetailScreen = ({
   route,
   navigation,
@@ -50,13 +35,19 @@ export const PokemonDetailScreen = ({
   const query = usePokemonDetail(id);
   const { data, error, isPlaceholderData, refetch } = query;
   const viewState = getQueryViewState(query);
-  const scrollRef = useRef<ScrollViewInstance>(null);
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const scrollY = useSharedValue(0);
   const opacity = useSharedValue(1);
+
+  // Guarda el desplazamiento vertical para el parallax del héroe.
+  const onScroll = useAnimatedScrollHandler(event => {
+    scrollY.value = event.contentOffset.y;
+  });
 
   // Vuelve al inicio del scroll cada vez que se elige otro Pokémon.
   useEffect(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
-  }, [id]);
+  }, [id, scrollRef]);
 
   // Atenúa el contenido anterior mientras carga el nuevo y lo restaura al llegar.
   useEffect(() => {
@@ -91,76 +82,34 @@ export const PokemonDetailScreen = ({
 
   return (
     <Animated.View style={[styles.screen, fadeStyle]}>
-      <ScrollView ref={scrollRef}>
+      <Animated.ScrollView
+        ref={scrollRef}
+        onScroll={onScroll}
+        scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+        contentContainerStyle={styles.content}>
         <PokemonHero
+          number={formatPokemonNumber(data.id)}
+          name={formatSlug(data.name)}
+          types={data.types}
           imageUrl={data.imageUrl}
           shinyImageUrl={data.shinyImageUrl}
           gradientColors={gradientColors}
+          scrollY={scrollY}
           onBack={goBack}
         />
-        <View style={styles.body}>
-          <Text style={styles.number}>{formatPokemonNumber(data.id)}</Text>
-          <Text style={styles.name}>{formatSlug(data.name)}</Text>
-          <View style={styles.badges}>
-            {data.types.map(type => (
-              <TypeBadge key={type} type={type} />
-            ))}
-          </View>
-          <View style={styles.row}>
-            <InfoItem
-              label={UI_MESSAGES.height}
-              value={`${decimetersToMeters(data.height)} ${UNIT_LABELS.meter}`}
-            />
-            <InfoItem
-              label={UI_MESSAGES.weight}
-              value={`${hectogramsToKilograms(data.weight)} ${UNIT_LABELS.kilogram}`}
-            />
-          </View>
-          <InfoItem
-            label={UI_MESSAGES.abilities}
-            value={data.abilities.map(formatSlug).join(LIST_SEPARATOR)}
-          />
-          <Text style={styles.sectionTitle}>{UI_MESSAGES.stats}</Text>
-          {data.stats.map(stat => (
-            <StatBar
-              key={stat.name}
-              label={STAT_LABELS[stat.name] ?? formatSlug(stat.name)}
-              value={stat.value}
-              color={gradientColors[0]}
-            />
-          ))}
-          <Text style={styles.sectionTitle}>{UI_MESSAGES.evolutions}</Text>
-          <EvolutionSection
-            stages={data.evolutions}
-            currentId={id}
-            onSelect={openStage}
-          />
-        </View>
-      </ScrollView>
+        <PokemonDetailSheet
+          pokemon={data}
+          currentId={id}
+          color={gradientColors[0]}
+          effectivenessEnabled={!isPlaceholderData}
+          onSelectStage={openStage}
+        />
+      </Animated.ScrollView>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  body: { padding: spacing.lg },
-  number: { fontSize: fontSize.body, color: colors.textSecondary },
-  name: {
-    fontSize: fontSize.title,
-    fontWeight: fontWeight.bold,
-    color: colors.textPrimary,
-  },
-  badges: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    marginVertical: spacing.md,
-  },
-  row: { flexDirection: 'row', gap: spacing.xl },
-  sectionTitle: {
-    fontSize: fontSize.subtitle,
-    fontWeight: fontWeight.bold,
-    color: colors.textPrimary,
-    marginTop: spacing.lg,
-    marginBottom: spacing.md,
-  },
+  screen: { flex: 1, backgroundColor: colors.surface },
+  content: { flexGrow: 1 },
 });

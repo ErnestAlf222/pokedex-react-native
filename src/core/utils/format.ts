@@ -1,4 +1,5 @@
 import {
+  MULTIPLIER_LABELS,
   POKEMON_NUMBER_PAD_CHAR,
   POKEMON_NUMBER_PAD_LENGTH,
   POKEMON_NUMBER_PREFIX,
@@ -20,3 +21,7 @@ const capitalizeWord = (word: string): string =>
 // Convierte un slug de la API (solar-power) en texto legible (Solar Power).
 export const formatSlug = (slug: string): string =>
   slug.split(SLUG_SEPARATOR).map(capitalizeWord).join(WORD_SEPARATOR);
+
+// Formatea un multiplicador de daño (2 → ×2, 0.25 → ×¼); si no tiene etiqueta usa el número.
+export const formatMultiplier = (multiplier: number): string =>
+  MULTIPLIER_LABELS[multiplier] ?? `×${multiplier}`;

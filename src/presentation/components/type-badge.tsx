@@ -1,26 +1,37 @@
 import { StyleSheet, Text, View } from 'react-native';
 import {
   colors,
+  effects,
   fontSize,
   fontWeight,
   formatSlug,
   getTypeColor,
   radius,
   spacing,
+  withAlpha,
 } from '../../core';
 
 interface TypeBadgeProps {
   type: string;
   compact?: boolean;
+  glass?: boolean;
 }
 
-// Etiqueta con el nombre del tipo sobre el color de ese tipo; admite variante compacta.
-export const TypeBadge = ({ type, compact = false }: TypeBadgeProps) => (
+// Etiqueta con el nombre del tipo: compacta o translúcida (para usarla sobre el degradado de ese mismo tipo).
+export const TypeBadge = ({
+  type,
+  compact = false,
+  glass = false,
+}: TypeBadgeProps) => (
   <View
     style={[
       styles.badge,
       compact && styles.badgeCompact,
-      { backgroundColor: getTypeColor(type) },
+      {
+        backgroundColor: glass
+          ? withAlpha(colors.onGradient, effects.glassOpacity)
+          : getTypeColor(type),
+      },
     ]}>
     <Text style={[styles.label, compact && styles.labelCompact]}>
       {formatSlug(type)}
