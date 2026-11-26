@@ -1,6 +1,8 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   LIST_SEPARATOR,
+  ROUTES,
+  STAT_LABELS,
   UI_MESSAGES,
   UNIT_LABELS,
   colors,
@@ -18,15 +20,17 @@ import {
 import {
   BackButton,
   ErrorView,
+  EvolutionSection,
   InfoItem,
   PokeballLoader,
   PokemonHero,
+  StatBar,
   TypeBadge,
 } from '../components';
 import { usePokemonDetail } from '../hooks';
 import { PokemonDetailScreenProps } from '../navigation';
 
-// Pantalla de detalle: encabezado con gradiente, identidad y datos básicos.
+// Pantalla de detalle: encabezado, datos básicos, stats y evoluciones.
 export const PokemonDetailScreen = ({
   route,
   navigation,
@@ -37,6 +41,10 @@ export const PokemonDetailScreen = ({
 
   // Vuelve a la pantalla anterior sin pasar argumentos del evento.
   const goBack = () => navigation.goBack();
+
+  // Abre el detalle de otra etapa apilándolo, para poder volver al anterior.
+  const openStage = (id: number) =>
+    navigation.push(ROUTES.pokemonDetail, { id });
 
   if (isPending || !data) {
     return (
@@ -56,11 +64,14 @@ export const PokemonDetailScreen = ({
     );
   }
 
+  const gradientColors = getGradientColors(data.types);
+
   return (
     <ScrollView style={styles.screen}>
       <PokemonHero
         imageUrl={data.imageUrl}
-        gradientColors={getGradientColors(data.types)}
+        spriteBack={data.spriteBack}
+        gradientColors={gradientColors}
         onBack={goBack}
       />
       <View style={styles.body}>
@@ -85,6 +96,21 @@ export const PokemonDetailScreen = ({
           label={UI_MESSAGES.abilities}
           value={data.abilities.map(formatSlug).join(LIST_SEPARATOR)}
         />
+        <Text style={styles.sectionTitle}>{UI_MESSAGES.stats}</Text>
+        {data.stats.map(stat => (
+          <StatBar
+            key={stat.name}
+            label={STAT_LABELS[stat.name] ?? formatSlug(stat.name)}
+            value={stat.value}
+            color={gradientColors[0]}
+          />
+        ))}
+        <Text style={styles.sectionTitle}>{UI_MESSAGES.evolutions}</Text>
+        <EvolutionSection
+          stages={data.evolutions}
+          currentId={data.id}
+          onSelect={openStage}
+        />
       </View>
     </ScrollView>
   );
@@ -105,4 +131,11 @@ const styles = StyleSheet.create({
     marginVertical: spacing.md,
   },
   row: { flexDirection: 'row', gap: spacing.xl },
+  sectionTitle: {
+    fontSize: fontSize.subtitle,
+    fontWeight: fontWeight.bold,
+    color: colors.textPrimary,
+    marginTop: spacing.lg,
+    marginBottom: spacing.md,
+  },
 });

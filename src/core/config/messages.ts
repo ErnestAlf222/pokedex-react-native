@@ -6,7 +6,20 @@ export const UI_MESSAGES = {
   height: 'Altura',
   weight: 'Peso',
   abilities: 'Habilidades',
+  stats: 'Estadísticas',
+  evolutions: 'Evoluciones',
+  noEvolutions: 'Este Pokémon no tiene evoluciones',
 } as const;
+
+// Etiqueta por stat; la clave es el nombre del stat que devuelve PokéAPI.
+export const STAT_LABELS: Record<string, string> = {
+  hp: 'PS',
+  attack: 'Ataque',
+  defense: 'Defensa',
+  'special-attack': 'At. especial',
+  'special-defense': 'Def. especial',
+  speed: 'Velocidad',
+};
 
 export const UNIT_LABELS = {
   meter: 'm',
