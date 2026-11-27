@@ -45,4 +45,10 @@ export const sizes = {
   sectionAccentWidth: 4,
   sectionAccentHeight: 18,
   cardIcon: 20,
+  typeCircle: 40,
+  typeCircleSmall: 28,
+  typeGlyph: 22,
+  typeGlyphSmall: 16,
+  levelBadge: 44,
+  classIcon: 20,
 } as const;

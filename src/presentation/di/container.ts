@@ -3,7 +3,9 @@ import {
   PokemonRepositoryImpl,
 } from '../../data';
 import {
+  GetAbilityDetailUseCase,
   GetAllPokemonUseCase,
+  GetMoveDetailUseCase,
   GetPokemonDetailUseCase,
   GetPokemonPageUseCase,
   GetPokemonTypeIndexUseCase,
@@ -20,4 +22,6 @@ export const container = {
   getAllPokemonUseCase: new GetAllPokemonUseCase(pokemonRepository),
   getPokemonTypeIndexUseCase: new GetPokemonTypeIndexUseCase(pokemonRepository),
   getTypeEffectivenessUseCase: new GetTypeEffectivenessUseCase(pokemonRepository),
+  getMoveDetailUseCase: new GetMoveDetailUseCase(pokemonRepository),
+  getAbilityDetailUseCase: new GetAbilityDetailUseCase(pokemonRepository),
 };

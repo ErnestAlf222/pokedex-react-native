@@ -20,4 +20,5 @@ export const effects = {
   entryScaleFrom: 0.8,
   radarStartScale: 0,
   tabDragFadeMin: 0.4,
+  neutralTypeOpacity: 0.35,
 } as const;

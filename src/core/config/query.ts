@@ -10,6 +10,8 @@ export const TYPE_INDEX_STALE_TIME_MS = Infinity;
 export const TYPE_INDEX_GC_TIME_MS = Infinity;
 export const EFFECTIVENESS_STALE_TIME_MS = Infinity;
 export const EFFECTIVENESS_GC_TIME_MS = Infinity;
+export const CATALOG_STALE_TIME_MS = Infinity;
+export const CATALOG_GC_TIME_MS = Infinity;
 
 export const POKEMON_QUERY_KEYS = {
   list: ['pokemon', 'list'],
@@ -21,4 +23,6 @@ export const POKEMON_QUERY_KEYS = {
     'effectiveness',
     ...[...typeNames].sort(),
   ],
+  move: (name: string) => ['pokemon', 'move', name],
+  ability: (name: string) => ['pokemon', 'ability', name],
 } as const;

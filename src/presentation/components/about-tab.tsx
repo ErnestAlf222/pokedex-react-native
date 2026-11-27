@@ -12,12 +12,12 @@ import {
   decimetersToMeters,
   fontSize,
   fontWeight,
-  formatSlug,
   getLabel,
   hectogramsToKilograms,
   spacing,
 } from '../../core';
 import { PokemonDetail } from '../../domain';
+import { AbilityCard } from './ability-card';
 import { DetailSection } from './detail-section';
 import { EffectivenessSection } from './effectiveness-section';
 import { FlagBadges } from './flag-badges';
@@ -92,10 +92,14 @@ export const AboutTab = ({
           title={UI_MESSAGES.abilities}
           icon={DETAIL_ICONS.abilities}
           color={color}>
-          <LabelChipList
-            labels={pokemon.abilities.map(({ name }) => formatSlug(name))}
-            color={color}
-          />
+          {pokemon.abilities.map(({ name, isHidden }) => (
+            <AbilityCard
+              key={name}
+              name={name}
+              isHidden={isHidden}
+              color={color}
+            />
+          ))}
         </DetailSection>
       </StaggerItem>
       <StaggerItem index={3}>

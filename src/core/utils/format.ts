@@ -40,6 +40,16 @@ export const formatMoveLevel = (level: number): string =>
     ? UI_MESSAGES.learnedOnEvolution
     : `${UI_MESSAGES.level} ${level}`;
 
+// Texto del nivel dentro de un círculo: el número, o "Evo." si se aprende al evolucionar (nivel 0).
+export const formatLevelBadge = (level: number): string =>
+  level === EVOLUTION_LEARN_LEVEL
+    ? UI_MESSAGES.learnedOnEvolution
+    : String(level);
+
+// Texto de poder, precisión o PP de un movimiento: el valor con su sufijo, o "—" si la API no lo da (null).
+export const formatMoveStat = (value: number | null, suffix = ''): string =>
+  value === null ? UI_MESSAGES.noValue : `${value}${suffix}`;
+
 // Etiqueta en español de un tipo de Pokémon.
 export const getTypeLabel = (type: string): string =>
   getLabel(TYPE_LABELS, type);

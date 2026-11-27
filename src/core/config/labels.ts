@@ -62,3 +62,10 @@ export const GROWTH_RATE_LABELS: LabelMap = {
   'slow-then-very-fast': 'Errática',
   'fast-then-very-slow': 'Fluctuante',
 };
+
+// Etiqueta de la clase de daño de un movimiento (para accesibilidad); la clave es el nombre de PokéAPI.
+export const DAMAGE_CLASS_LABELS: LabelMap = {
+  physical: 'Físico',
+  special: 'Especial',
+  status: 'Estado',
+};

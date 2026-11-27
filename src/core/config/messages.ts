@@ -28,14 +28,17 @@ export const UI_MESSAGES = {
   mythical: 'Mítico',
   baby: 'Bebé',
   weaknesses: 'Debilidades',
-  weakTo: 'Débil a',
-  resists: 'Resiste',
-  immuneTo: 'Inmune',
   effectivenessUnavailable: 'Debilidades no disponibles sin conexión',
   total: 'Total',
   noMoves: 'Sin movimientos por nivel',
   level: 'Nivel',
   learnedOnEvolution: 'Evo.',
+  viewMore: 'Ver más',
+  hiddenAbility: 'Oculta',
+  power: 'Poder',
+  accuracy: 'Precisión',
+  pp: 'PP',
+  noValue: '—',
 } as const;
 
 export const DETAIL_TAB_LABELS: Record<DetailTab, string> = {

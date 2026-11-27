@@ -7,4 +7,5 @@ export * from './messages';
 export * from './pokemon-rules';
 export * from './query';
 export * from './routes';
+export * from './type-icons';
 export * from './ui';

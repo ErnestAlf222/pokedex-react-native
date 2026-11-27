@@ -1,15 +1,17 @@
 import { StyleSheet, Text } from 'react-native';
 import {
   DETAIL_ICONS,
+  POKEMON_TYPES,
   UI_MESSAGES,
   colors,
   fontSize,
   getQueryViewState,
   sizes,
 } from '../../core';
+import { completeTypeMultipliers } from '../../domain';
 import { usePokemonEffectiveness } from '../hooks';
 import { DetailSection } from './detail-section';
-import { EffectivenessGroup } from './effectiveness-group';
+import { EffectivenessMatrix } from './effectiveness-matrix';
 import { PokeballLoader } from './pokeball-loader';
 
 interface EffectivenessSectionProps {
@@ -18,7 +20,7 @@ interface EffectivenessSectionProps {
   enabled: boolean;
 }
 
-// Debilidades, resistencias e inmunidades del Pokémon; sin red y sin dato muestra un aviso discreto sin bloquear el resto.
+// Matriz de efectividad de los 18 tipos; sin red y sin dato muestra un aviso discreto sin bloquear el resto.
 export const EffectivenessSection = ({
   typeNames,
   color,
@@ -34,21 +36,9 @@ export const EffectivenessSection = ({
       icon={DETAIL_ICONS.weaknesses}
       color={color}>
       {viewState === 'content' && data ? (
-        <>
-          <EffectivenessGroup
-            title={UI_MESSAGES.weakTo}
-            items={data.weaknesses}
-          />
-          <EffectivenessGroup
-            title={UI_MESSAGES.resists}
-            items={data.resistances}
-          />
-          <EffectivenessGroup
-            title={UI_MESSAGES.immuneTo}
-            items={data.immunities}
-            showMultiplier={false}
-          />
-        </>
+        <EffectivenessMatrix
+          multipliers={completeTypeMultipliers(data, POKEMON_TYPES)}
+        />
       ) : viewState === 'loading' ? (
         <PokeballLoader size={sizes.loaderSmall} />
       ) : (

@@ -71,6 +71,9 @@ export const DETAIL_ICONS = {
 export type DetailIconName = (typeof DETAIL_ICONS)[keyof typeof DETAIL_ICONS];
 export const INFO_COLUMNS = 2;
 export const MOVE_SEPARATOR = ' · ';
+export const MOVES_INITIAL_COUNT = 5;
+export const MOVE_EXPAND_DURATION_MS = 250;
+export const EFFECTIVENESS_COLUMNS = 6;
 
 export const STAT_LEVEL_THRESHOLDS = { medium: 50, high: 90 } as const;
 export const RADAR_LEVELS = 4;
