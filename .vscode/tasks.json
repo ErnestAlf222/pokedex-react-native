@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Emulador Android",
+      "type": "shell",
+      "command": "${env:LOCALAPPDATA}\\Android\\Sdk\\emulator\\emulator.exe",
+      "args": ["-avd", "Pixel_9_Pro"],
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "never", "panel": "dedicated" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Metro",
+      "type": "shell",
+      "command": "npx",
+      "args": ["react-native", "start"],
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated" }
+    }
+  ]
+}

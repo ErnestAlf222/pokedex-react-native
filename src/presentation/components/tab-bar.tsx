@@ -19,6 +19,7 @@ import {
   radius,
   sizes,
 } from '../../core';
+import { useAnimatedColor } from '../hooks';
 
 interface TabBarProps<T extends string> {
   tabs: readonly T[];
@@ -46,6 +47,8 @@ export const TabBar = <T extends string>({
     offset.value = withSpring(tabs.indexOf(selected) * tabWidth, SPRING_CONFIG);
   }, [offset, selected, tabWidth, tabs]);
 
+  const colorStyle = useAnimatedColor(color);
+
   const indicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: offset.value }],
   }));
@@ -59,7 +62,8 @@ export const TabBar = <T extends string>({
       <Animated.View
         style={[
           styles.indicator,
-          { width: tabWidth, backgroundColor: color },
+          { width: tabWidth },
+          colorStyle,
           indicatorStyle,
         ]}
       />

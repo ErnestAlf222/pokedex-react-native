@@ -16,6 +16,7 @@ export const pickLocalized = <T extends LocalizedEntry>(
   language: string = DEFAULT_LANGUAGE,
   fallback: string = FALLBACK_LANGUAGE,
 ): T | undefined => {
+  // Última entrada del idioma dado, si existe.
   const lastIn = (code: string): T | undefined =>
     entries.filter(entry => entry.language.name === code).pop();
   return lastIn(language) ?? lastIn(fallback);
