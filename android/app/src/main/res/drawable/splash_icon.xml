@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ícono del splash: el primer plano de la pokéball con un margen extra, porque con fondo de ícono
+    el área visible es un círculo de 160dp dentro de 240dp. No modifica el ícono del lanzador.
+-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_launcher_foreground"
+    android:inset="6%" />
