@@ -23,6 +23,7 @@ export const POKEMON_QUERY_KEYS = {
     'effectiveness',
     ...[...typeNames].sort(),
   ],
+  generationIndex: ['pokemon', 'generation-index'],
   move: (name: string) => ['pokemon', 'move', name],
   ability: (name: string) => ['pokemon', 'ability', name],
 } as const;

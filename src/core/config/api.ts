@@ -3,6 +3,7 @@ import { POKEAPI_SPRITES_BASE_URL } from './env';
 export const POKEMON_ENDPOINT = '/pokemon';
 export const POKEMON_SPECIES_ENDPOINT = '/pokemon-species';
 export const TYPE_ENDPOINT = '/type';
+export const GENERATION_ENDPOINT = '/generation';
 export const MOVE_ENDPOINT = '/move';
 export const ABILITY_ENDPOINT = '/ability';
 export const POKEMON_PAGE_SIZE = 20;

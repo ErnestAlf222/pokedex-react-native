@@ -7,6 +7,7 @@ import {
   GetAllPokemonUseCase,
   GetMoveDetailUseCase,
   GetPokemonDetailUseCase,
+  GetPokemonGenerationIndexUseCase,
   GetPokemonPageUseCase,
   GetPokemonTypeIndexUseCase,
   GetTypeEffectivenessUseCase,
@@ -22,6 +23,9 @@ export const container = {
   getAllPokemonUseCase: new GetAllPokemonUseCase(pokemonRepository),
   getPokemonTypeIndexUseCase: new GetPokemonTypeIndexUseCase(pokemonRepository),
   getTypeEffectivenessUseCase: new GetTypeEffectivenessUseCase(pokemonRepository),
+  getPokemonGenerationIndexUseCase: new GetPokemonGenerationIndexUseCase(
+    pokemonRepository,
+  ),
   getMoveDetailUseCase: new GetMoveDetailUseCase(pokemonRepository),
   getAbilityDetailUseCase: new GetAbilityDetailUseCase(pokemonRepository),
 };

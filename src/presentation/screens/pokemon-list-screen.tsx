@@ -2,13 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-  ALL_TYPES_VALUE,
+  ALL_GENERATIONS_VALUE,
   ROUTES,
-  SEARCH_DEBOUNCE_MS,
   colors,
+  getQueryViewState,
 } from '../../core';
 import { listTypeNames } from '../../domain';
 import {
+  FilterFab,
+  FilterSheet,
   PokemonInfiniteList,
   PokemonSearchResults,
   ScreenHeader,
@@ -17,22 +19,24 @@ import {
 } from '../components';
 import {
   useAllPokemon,
-  useDebouncedValue,
+  usePokemonFilters,
+  usePokemonGenerationIndex,
   usePokemonTypeIndex,
 } from '../hooks';
 import { AppNavigation } from '../navigation';
 
-// Pantalla del listado: cabecera, búsqueda y chips de tipo fijos; debajo, el listado paginado o los resultados filtrados.
+// Pantalla del listado: cabecera, búsqueda y chips fijos, botón flotante de filtros y, debajo, el listado paginado o los resultados filtrados.
 export const PokemonListScreen = () => {
   const navigation = useNavigation<AppNavigation>();
-  const [query, setQuery] = useState('');
-  const [selectedType, setSelectedType] = useState(ALL_TYPES_VALUE);
+  const filters = usePokemonFilters();
+  const { criteria, isFiltering } = filters;
   const [hasFocusedSearch, setHasFocusedSearch] = useState(false);
-  const debouncedQuery = useDebouncedValue(query, SEARCH_DEBOUNCE_MS);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const typeIndex = usePokemonTypeIndex().data;
   const typeNames = useMemo(() => listTypeNames(typeIndex ?? {}), [typeIndex]);
-  const isFiltering =
-    debouncedQuery.trim() !== '' || selectedType !== ALL_TYPES_VALUE;
+  const generationQuery = usePokemonGenerationIndex({
+    enabled: isSheetOpen || criteria.generation !== ALL_GENERATIONS_VALUE,
+  });
   const all = useAllPokemon({ enabled: hasFocusedSearch || isFiltering });
 
   // Abre el detalle del Pokémon elegido.
@@ -43,32 +47,58 @@ export const PokemonListScreen = () => {
     <View style={styles.screen}>
       <ScreenHeader />
       <SearchBar
-        value={query}
-        onChangeText={setQuery}
+        value={filters.query}
+        onChangeText={filters.setQuery}
         onFocus={() => setHasFocusedSearch(true)}
       />
       {typeIndex && (
         <TypeFilterChips
           types={typeNames}
-          selected={selectedType}
-          onSelect={setSelectedType}
+          selected={criteria.type}
+          onSelect={filters.setType}
         />
       )}
-      {isFiltering ? (
-        <PokemonSearchResults
-          all={all}
-          query={debouncedQuery}
-          typeName={selectedType}
-          typeIndex={typeIndex}
-          onPressPokemon={openDetail}
-        />
-      ) : (
-        <PokemonInfiniteList typeIndex={typeIndex} onPressPokemon={openDetail} />
-      )}
+      <View style={styles.results}>
+        <View
+          style={StyleSheet.absoluteFill}
+          pointerEvents={isFiltering ? 'none' : 'auto'}
+          importantForAccessibility={isFiltering ? 'no-hide-descendants' : 'auto'}>
+          <PokemonInfiniteList
+            typeIndex={typeIndex}
+            onPressPokemon={openDetail}
+          />
+        </View>
+        {isFiltering && (
+          <View style={[StyleSheet.absoluteFill, styles.overlay]}>
+            <PokemonSearchResults
+              all={all}
+              criteria={criteria}
+              typeIndex={typeIndex}
+              generationIndex={generationQuery.data}
+              onPressPokemon={openDetail}
+            />
+          </View>
+        )}
+      </View>
+      <FilterFab
+        count={filters.activeFilterCount}
+        onPress={() => setIsSheetOpen(true)}
+      />
+      <FilterSheet
+        visible={isSheetOpen}
+        generation={criteria.generation}
+        order={criteria.order}
+        generations={generationQuery.data?.generations ?? []}
+        generationsState={getQueryViewState(generationQuery)}
+        onApply={filters.applyPanelFilters}
+        onClose={() => setIsSheetOpen(false)}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
+  results: { flex: 1 },
+  overlay: { backgroundColor: colors.background },
 });

@@ -1,19 +1,23 @@
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { colors, sizes } from '../../core';
+import { getReadableTextColor, sizes } from '../../core';
+
+export type IconName = ComponentProps<typeof MaterialIcons>['name'];
 
 interface IconCircleProps {
-  icon: ComponentProps<typeof MaterialIcons>['name'];
+  icon: IconName;
   color: string;
+  glyphColor?: string;
   small?: boolean;
   accessibilityLabel?: string;
 }
 
-// Círculo de color con un ícono blanco; grande o pequeño. Base de TypeIcon y de los chips de filtro.
+// Círculo de color con un ícono; el ícono se ve claro u oscuro según el fondo (o con el color indicado). Base de TypeIcon y de los chips.
 export const IconCircle = ({
   icon,
   color,
+  glyphColor,
   small = false,
   accessibilityLabel,
 }: IconCircleProps) => (
@@ -27,7 +31,7 @@ export const IconCircle = ({
     <MaterialIcons
       name={icon}
       size={small ? sizes.typeGlyphSmall : sizes.typeGlyph}
-      color={colors.onGradient}
+      color={glyphColor ?? getReadableTextColor(color)}
     />
   </View>
 );

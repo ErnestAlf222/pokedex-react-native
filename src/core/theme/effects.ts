@@ -23,4 +23,5 @@ export const effects = {
   radarStartScale: 0,
   tabDragFadeMin: 0.4,
   neutralTypeOpacity: 0.35,
+  backdropOpacity: 0.5,
 } as const;

@@ -4,6 +4,7 @@ import {
   effects,
   fontSize,
   fontWeight,
+  getReadableTextColor,
   getTypeColor,
   getTypeLabel,
   radius,
@@ -17,7 +18,7 @@ interface TypeBadgeProps {
   glass?: boolean;
 }
 
-// Etiqueta con el nombre del tipo: compacta o translúcida (para usarla sobre el degradado de ese mismo tipo).
+// Etiqueta con el nombre del tipo: compacta o translúcida (sobre el degradado de ese mismo tipo); el texto se adapta al color para leerse bien.
 export const TypeBadge = ({
   type,
   compact = false,
@@ -33,7 +34,12 @@ export const TypeBadge = ({
           : getTypeColor(type),
       },
     ]}>
-    <Text style={[styles.label, compact && styles.labelCompact]}>
+    <Text
+      style={[
+        styles.label,
+        compact && styles.labelCompact,
+        { color: glass ? colors.onGradient : getReadableTextColor(getTypeColor(type)) },
+      ]}>
       {getTypeLabel(type)}
     </Text>
   </View>

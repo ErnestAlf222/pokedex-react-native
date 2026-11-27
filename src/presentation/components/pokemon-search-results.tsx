@@ -1,11 +1,17 @@
 import { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { getQueryViewState, getTypeLabel, noResultsMessage } from '../../core';
 import {
+  getGenerationLabel,
+  getQueryViewState,
+  getTypeLabel,
+  noResultsMessage,
+} from '../../core';
+import {
+  PokemonFilterCriteria,
+  PokemonGenerationIndex,
   PokemonSummary,
   PokemonTypeIndex,
-  filterPokemonByType,
-  searchPokemon,
+  applyPokemonFilters,
 } from '../../domain';
 import { EmptyView } from './empty-view';
 import { PokemonGrid } from './pokemon-grid';
@@ -13,30 +19,29 @@ import { QueryFallbackView } from './query-fallback-view';
 
 interface PokemonSearchResultsProps {
   all: UseQueryResult<PokemonSummary[]>;
-  query: string;
-  typeName: string;
+  criteria: PokemonFilterCriteria;
   typeIndex?: PokemonTypeIndex;
+  generationIndex?: PokemonGenerationIndex;
   onPressPokemon: (id: number) => void;
 }
 
-// Resultados locales sobre la lista completa (texto y tipo a la vez), con sus estados de carga, sin conexión y error.
+// Resultados locales sobre la lista completa (búsqueda, tipo, generación y orden a la vez), con sus estados de carga, sin conexión y error.
 export const PokemonSearchResults = ({
   all,
-  query,
-  typeName,
+  criteria,
   typeIndex,
+  generationIndex,
   onPressPokemon,
 }: PokemonSearchResultsProps) => {
   const results = useMemo(
     () =>
-      filterPokemonByType(
-        searchPokemon(all.data ?? [], query),
-        typeIndex ?? {},
-        typeName,
-      ),
-    [all.data, query, typeIndex, typeName],
+      applyPokemonFilters(all.data ?? [], criteria, typeIndex, generationIndex),
+    [all.data, criteria, typeIndex, generationIndex],
   );
   const viewState = getQueryViewState(all);
+  const generation = generationIndex?.generations.find(
+    ({ id }) => id === criteria.generation,
+  );
 
   if (viewState !== 'content' || !all.data) {
     return (
@@ -56,8 +61,11 @@ export const PokemonSearchResults = ({
       ListEmptyComponent={
         <EmptyView
           message={noResultsMessage(
-            query.trim(),
-            typeName === '' ? '' : getTypeLabel(typeName),
+            criteria.query.trim(),
+            criteria.type === '' ? '' : getTypeLabel(criteria.type),
+            generation === undefined
+              ? ''
+              : getGenerationLabel(generation.name, generation.region),
           )}
         />
       }

@@ -15,6 +15,7 @@ import {
   formatLevelBadge,
   getDamageClassIcon,
   getLabel,
+  getReadableTextColor,
   getTypeColor,
   radius,
   sizes,
@@ -50,7 +51,13 @@ export const MoveCard = ({ move, level }: MoveCardProps) => {
               styles.level,
               { backgroundColor: getTypeColor(move.type) },
             ]}>
-            <Text style={styles.levelText}>{formatLevelBadge(level)}</Text>
+            <Text
+              style={[
+                styles.levelText,
+                { color: getReadableTextColor(getTypeColor(move.type)) },
+              ]}>
+              {formatLevelBadge(level)}
+            </Text>
           </View>
           <Text style={styles.name} numberOfLines={1}>
             {move.name}

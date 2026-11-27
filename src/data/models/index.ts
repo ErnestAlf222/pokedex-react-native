@@ -1,5 +1,6 @@
 export * from './ability-dto';
 export * from './evolution-chain-dto';
+export * from './generation-dto';
 export * from './localized-name-dto';
 export * from './move-dto';
 export * from './named-resource-dto';

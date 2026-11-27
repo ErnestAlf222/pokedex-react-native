@@ -39,6 +39,14 @@ export const UI_MESSAGES = {
   accuracy: 'Precisión',
   pp: 'PP',
   noValue: '—',
+  filters: 'Filtros',
+  closeFilters: 'Cerrar filtros',
+  generation: 'Generación',
+  allGenerations: 'Todas',
+  generationsUnavailable: 'Generaciones no disponibles sin conexión',
+  order: 'Orden',
+  clearFilters: 'Limpiar',
+  applyFilters: 'Aplicar',
 } as const;
 
 export const DETAIL_TAB_LABELS: Record<DetailTab, string> = {
@@ -57,8 +65,12 @@ export const MULTIPLIER_LABELS: Record<number, string> = {
 };
 
 // Mensaje sin coincidencias, incluyendo el texto buscado y el tipo elegido si los hay.
-export const noResultsMessage = (query: string, type: string): string => {
-  const criteria = [query && `"${query}"`, type && `tipo ${type}`]
+export const noResultsMessage = (
+  query: string,
+  type: string,
+  generation = '',
+): string => {
+  const criteria = [query && `"${query}"`, type && `tipo ${type}`, generation]
     .filter(Boolean)
     .join(' · ');
   return criteria === '' ? UI_MESSAGES.empty : `Sin resultados para ${criteria}`;

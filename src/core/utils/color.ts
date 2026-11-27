@@ -1,10 +1,23 @@
 import { STAT_LEVEL_THRESHOLDS } from '../config';
-import { effects, fallbackTypeColor, statColors, typeColors } from '../theme';
+import {
+  colors,
+  effects,
+  fallbackTypeColor,
+  statColors,
+  typeColors,
+} from '../theme';
 
 const HEX_RADIX = 16;
 const CHANNEL_LENGTH = 2;
 const MAX_CHANNEL = 255;
 const CHANNEL_PATTERN = /.{2}/g;
+const LUMINANCE_WEIGHTS = [0.2126, 0.7152, 0.0722] as const;
+const SRGB_LINEAR_LIMIT = 0.03928;
+const SRGB_LINEAR_DIVISOR = 12.92;
+const SRGB_OFFSET = 0.055;
+const SRGB_SCALE = 1.055;
+const SRGB_GAMMA = 2.4;
+const CONTRAST_OFFSET = 0.05;
 
 // Oscurece un color #RRGGBB multiplicando cada canal por (1 - factor).
 export const darkenColor = (hex: string, factor: number): string => {
@@ -58,3 +71,30 @@ export const getStatColor = (value: number): string => {
     ? statColors.medium
     : statColors.low;
 };
+
+// Luminancia relativa (WCAG) de un color #RRGGBB: 0 es negro y 1 es blanco.
+const getLuminance = (hex: string): number =>
+  (hex.slice(1).match(CHANNEL_PATTERN) ?? [])
+    .map(channel => parseInt(channel, HEX_RADIX) / MAX_CHANNEL)
+    .map(value =>
+      value <= SRGB_LINEAR_LIMIT
+        ? value / SRGB_LINEAR_DIVISOR
+        : ((value + SRGB_OFFSET) / SRGB_SCALE) ** SRGB_GAMMA,
+    )
+    .reduce((sum, value, index) => sum + value * LUMINANCE_WEIGHTS[index]!, 0);
+
+// Relación de contraste (WCAG) entre dos colores #RRGGBB.
+const getContrastRatio = (first: string, second: string): number => {
+  const [lighter = 0, darker = 0] = [
+    getLuminance(first),
+    getLuminance(second),
+  ].sort((a, b) => b - a);
+  return (lighter + CONTRAST_OFFSET) / (darker + CONTRAST_OFFSET);
+};
+
+// Color de texto legible sobre el fondo: el claro o el oscuro de la app, el que dé más contraste.
+export const getReadableTextColor = (background: string): string =>
+  getContrastRatio(background, colors.onGradient) >=
+  getContrastRatio(background, colors.textPrimary)
+    ? colors.onGradient
+    : colors.textPrimary;

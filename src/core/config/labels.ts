@@ -69,3 +69,23 @@ export const DAMAGE_CLASS_LABELS: LabelMap = {
   special: 'Especial',
   status: 'Estado',
 };
+
+// Nombre en español de la región principal de cada generación; la clave es el nombre de PokéAPI.
+export const REGION_LABELS: LabelMap = {
+  kanto: 'Kanto',
+  johto: 'Johto',
+  hoenn: 'Hoenn',
+  sinnoh: 'Sinnoh',
+  unova: 'Teselia',
+  kalos: 'Kalos',
+  alola: 'Alola',
+  galar: 'Galar',
+  paldea: 'Paldea',
+};
+
+// Etiqueta de cada criterio de orden del listado.
+export const SORT_ORDER_LABELS: LabelMap = {
+  'number-asc': 'Número ↑',
+  'number-desc': 'Número ↓',
+  'name-asc': 'Nombre A–Z',
+};

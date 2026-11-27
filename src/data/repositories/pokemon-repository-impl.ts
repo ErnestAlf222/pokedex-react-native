@@ -3,6 +3,7 @@ import {
   MoveDetail,
   Page,
   PokemonDetail,
+  PokemonGenerationIndex,
   PokemonRepository,
   PokemonSummary,
   PokemonTypeIndex,
@@ -12,6 +13,7 @@ import { PokemonRemoteDataSource } from '../datasources';
 import {
   toAbilityDetail,
   toMoveDetail,
+  toPokemonGenerationIndex,
   toPokemonDetail,
   toPokemonPage,
   toPokemonSummary,
@@ -65,6 +67,13 @@ export class PokemonRepositoryImpl implements PokemonRepository {
   ): Promise<TypeDamageRelations[]> {
     const dtos = await this.remoteDataSource.getTypeDamageRelations(typeNames);
     return dtos.map(toTypeDamageRelations);
+  }
+
+  // Pide todas las generaciones y arma el índice de generaciones.
+  async getPokemonGenerationIndex(): Promise<PokemonGenerationIndex> {
+    return toPokemonGenerationIndex(
+      await this.remoteDataSource.getAllGenerations(),
+    );
   }
 
   // Pide un movimiento por nombre y lo mapea a la entidad de dominio.

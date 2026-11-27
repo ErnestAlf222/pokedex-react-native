@@ -66,7 +66,11 @@ export const allTexts = (
     .findAllByType(Text)
     .map(node => node.props.children)
     .flat(Infinity)
-    .filter((child): child is string => typeof child === 'string');
+    .filter(
+      (child): child is string | number =>
+        typeof child === 'string' || typeof child === 'number',
+    )
+    .map(String);
 
 // Pulsa el primer ancestro con onPress del texto indicado.
 export const pressText = async (

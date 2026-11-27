@@ -5,7 +5,7 @@ import {
   UI_MESSAGES,
 } from '../config';
 import { colors, effects } from '../theme';
-import { getTypeColor, withAlpha } from './color';
+import { getReadableTextColor, getTypeColor, withAlpha } from './color';
 import { getTypeLabel } from './format';
 import { getTypeIcon } from './icons';
 
@@ -14,32 +14,42 @@ export interface ChipAppearance {
   borderColor: string;
   labelColor: string;
   iconBackground: string;
+  iconColor: string;
 }
 
-// Color base del chip: el del tipo, o el de marca para "Todos".
-const getChipColor = (type: string): string =>
+// Color base del chip de un tipo: el del tipo, o el de marca para "Todos".
+export const getChipColor = (type: string): string =>
   type === ALL_TYPES_VALUE ? colors.primary : getTypeColor(type);
 
-// Colores del chip: relleno del tipo con texto claro si está seleccionado; fondo tenue con borde sutil si no.
-export const getChipAppearance = (
-  type: string,
+// Colores de un chip de cualquier color base: relleno con texto legible si está seleccionado; fondo tenue con borde sutil si no.
+export const getColorChipAppearance = (
+  color: string,
   isActive: boolean,
-): ChipAppearance => {
-  const color = getChipColor(type);
-  return isActive
+): ChipAppearance =>
+  isActive
     ? {
         backgroundColor: color,
         borderColor: color,
-        labelColor: colors.onGradient,
-        iconBackground: withAlpha(colors.onGradient, effects.glassOpacity),
+        labelColor: getReadableTextColor(color),
+        iconBackground: withAlpha(
+          getReadableTextColor(color),
+          effects.glassOpacity,
+        ),
+        iconColor: getReadableTextColor(color),
       }
     : {
         backgroundColor: withAlpha(color, effects.chipInactiveOpacity),
         borderColor: withAlpha(color, effects.chipBorderOpacity),
         labelColor: colors.textPrimary,
         iconBackground: color,
+        iconColor: getReadableTextColor(color),
       };
-};
+
+// Colores del chip de un tipo ("Todos" usa el color de marca).
+export const getChipAppearance = (
+  type: string,
+  isActive: boolean,
+): ChipAppearance => getColorChipAppearance(getChipColor(type), isActive);
 
 // Ícono del chip: el propio de "Todos" o el del tipo.
 export const getChipIcon = (

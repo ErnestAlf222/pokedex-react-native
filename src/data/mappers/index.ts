@@ -1,5 +1,6 @@
 export * from './ability-mapper';
 export * from './evolution-chain-mapper';
+export * from './generation-index-mapper';
 export * from './move-mapper';
 export * from './pokemon-detail-mapper';
 export * from './pokemon-mapper';

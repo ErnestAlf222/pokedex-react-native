@@ -11,6 +11,7 @@ import {
   getChipIcon,
   getChipLabel,
   getChipScrollOffset,
+  getReadableTextColor,
   getTypeColor,
   getTypeLabel,
   withAlpha,
@@ -20,14 +21,16 @@ const glyphNames = new Set(Object.keys(glyphMap));
 
 // Pruebas de los colores de un chip seleccionado y no seleccionado.
 describe('getChipAppearance', () => {
-  it('seleccionado: relleno con el color del tipo y texto claro', () => {
+  it('seleccionado: relleno con el color del tipo y texto legible sobre él', () => {
     const color = getTypeColor('fire');
+    const readable = getReadableTextColor(color);
 
     expect(getChipAppearance('fire', true)).toEqual({
       backgroundColor: color,
       borderColor: color,
-      labelColor: colors.onGradient,
-      iconBackground: withAlpha(colors.onGradient, effects.glassOpacity),
+      labelColor: readable,
+      iconBackground: withAlpha(readable, effects.glassOpacity),
+      iconColor: readable,
     });
   });
 
@@ -39,6 +42,7 @@ describe('getChipAppearance', () => {
       borderColor: withAlpha(color, effects.chipBorderOpacity),
       labelColor: colors.textPrimary,
       iconBackground: color,
+      iconColor: getReadableTextColor(color),
     });
   });
 

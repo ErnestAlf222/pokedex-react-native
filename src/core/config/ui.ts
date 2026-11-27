@@ -15,7 +15,23 @@ export const POKEBALL_ICON_NAME = 'catching-pokemon';
 export const BACK_ICON_NAME = 'arrow-back';
 export const SEARCH_ICON_NAME = 'search';
 export const CLEAR_ICON_NAME = 'close';
+export const FILTER_ICON_NAME = 'tune';
 export const SEARCH_DEBOUNCE_MS = 300;
+export const SEARCH_CLEAR_FADE_MS = 150;
+
+// Generación "Todas" del filtro (0 = sin filtrar por generación).
+export const ALL_GENERATIONS_VALUE = 0;
+export const SORT_ORDERS = ['number-asc', 'number-desc', 'name-asc'] as const;
+export type SortOrder = (typeof SORT_ORDERS)[number];
+export const DEFAULT_SORT_ORDER: SortOrder = 'number-asc';
+export const SORT_ORDER_ICONS = {
+  'number-asc': 'arrow-upward',
+  'number-desc': 'arrow-downward',
+  'name-asc': 'sort-by-alpha',
+} as const satisfies Record<SortOrder, string>;
+export const FILTER_SHEET_DURATION_MS = 250;
+export const FAB_ENTRY_DELAY_MS = 400;
+export const FILTER_SHEET_MAX_HEIGHT_RATIO = 0.85;
 export const BANNER_ANIMATION_MS = 250;
 export const BANNER_RESTORED_DURATION_MS = 2500;
 

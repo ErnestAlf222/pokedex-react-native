@@ -4,6 +4,7 @@ import {
   END_REACHED_THRESHOLD,
   LIST_COLUMNS,
   MAX_ANIMATED_CARDS,
+  sizes,
   spacing,
 } from '../../core';
 import { PokemonSummary, PokemonTypeIndex } from '../../domain';
@@ -56,5 +57,9 @@ export const PokemonGrid = ({
 );
 
 const styles = StyleSheet.create({
-  content: { flexGrow: 1, padding: spacing.sm },
+  content: {
+    flexGrow: 1,
+    padding: spacing.sm,
+    paddingBottom: sizes.fabListInset,
+  },
 });

@@ -2,6 +2,7 @@ import {
   EVOLUTION_LEARN_LEVEL,
   LabelMap,
   MULTIPLIER_LABELS,
+  REGION_LABELS,
   TYPE_LABELS,
   UI_MESSAGES,
   POKEMON_NUMBER_PAD_CHAR,
@@ -49,6 +50,10 @@ export const formatLevelBadge = (level: number): string =>
 // Texto de poder, precisión o PP de un movimiento: el valor con su sufijo, o "—" si la API no lo da (null).
 export const formatMoveStat = (value: number | null, suffix = ''): string =>
   value === null ? UI_MESSAGES.noValue : `${value}${suffix}`;
+
+// Etiqueta de una generación: su nombre en español y la región principal, p. ej. "Generación I · Kanto".
+export const getGenerationLabel = (name: string, region: string): string =>
+  `${name} · ${getLabel(REGION_LABELS, region)}`;
 
 // Etiqueta en español de un tipo de Pokémon.
 export const getTypeLabel = (type: string): string =>

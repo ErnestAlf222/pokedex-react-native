@@ -3,6 +3,7 @@ import {
   MoveDetail,
   Page,
   PokemonDetail,
+  PokemonGenerationIndex,
   PokemonSummary,
   PokemonTypeIndex,
   TypeDamageRelations,
@@ -14,6 +15,7 @@ export interface PokemonRepository {
   getPokemonDetail(id: number): Promise<PokemonDetail>;
   getPokemonTypeIndex(): Promise<PokemonTypeIndex>;
   getTypeDamageRelations(typeNames: string[]): Promise<TypeDamageRelations[]>;
+  getPokemonGenerationIndex(): Promise<PokemonGenerationIndex>;
   getMoveDetail(name: string): Promise<MoveDetail>;
   getAbilityDetail(name: string): Promise<AbilityDetail>;
 }

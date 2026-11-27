@@ -1,5 +1,6 @@
 import {
   ABILITY_ENDPOINT,
+  GENERATION_ENDPOINT,
   INITIAL_OFFSET,
   MOVE_ENDPOINT,
   POKEAPI_BASE_URL,
@@ -13,6 +14,7 @@ import {
 import {
   AbilityDto,
   EvolutionChainDto,
+  GenerationDto,
   MoveDto,
   PokemonDto,
   PokemonListDto,
@@ -47,12 +49,22 @@ export class PokemonRemoteDataSource {
     return this.getPokemonList(INITIAL_OFFSET, POKEMON_FULL_LIST_LIMIT);
   }
 
-  // Pide la lista de tipos y luego cada tipo en paralelo.
-  async getAllTypes(): Promise<TypeDto[]> {
+  // Pide la lista de un endpoint y luego cada elemento en paralelo.
+  private async getAllOf<T>(endpoint: string): Promise<T[]> {
     const list = await getJson<PokemonListDto>(
-      listUrl(TYPE_ENDPOINT, INITIAL_OFFSET, POKEMON_FULL_LIST_LIMIT),
+      listUrl(endpoint, INITIAL_OFFSET, POKEMON_FULL_LIST_LIMIT),
     );
-    return Promise.all(list.results.map(({ url }) => getJson<TypeDto>(url)));
+    return Promise.all(list.results.map(({ url }) => getJson<T>(url)));
+  }
+
+  // Pide todos los tipos.
+  getAllTypes(): Promise<TypeDto[]> {
+    return this.getAllOf<TypeDto>(TYPE_ENDPOINT);
+  }
+
+  // Pide todas las generaciones, cada una con su lista de especies.
+  getAllGenerations(): Promise<GenerationDto[]> {
+    return this.getAllOf<GenerationDto>(GENERATION_ENDPOINT);
   }
 
   // Pide las relaciones de daño de cada tipo en paralelo, en el mismo orden recibido.

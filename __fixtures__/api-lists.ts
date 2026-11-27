@@ -61,3 +61,16 @@ export const API_GROWTH_RATE_NAMES = [
   'slow-then-very-fast',
   'fast-then-very-slow',
 ];
+
+// Regiones principales de las 9 generaciones (campo main_region de /generation/{id}).
+export const API_REGION_NAMES = [
+  'kanto',
+  'johto',
+  'hoenn',
+  'sinnoh',
+  'unova',
+  'kalos',
+  'alola',
+  'galar',
+  'paldea',
+];
