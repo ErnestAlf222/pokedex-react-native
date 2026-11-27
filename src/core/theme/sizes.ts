@@ -22,6 +22,7 @@ export const sizes = {
   searchIcon: 22,
   headerIcon: 32,
   chipHeight: 36,
+  chipBorder: 1,
   sheetOverlap: 32,
   tabBarHeight: 44,
   tabIndicatorInset: 4,

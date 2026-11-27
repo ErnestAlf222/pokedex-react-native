@@ -8,4 +8,11 @@ const center: ViewStyle = {
   padding: spacing.lg,
 };
 
-export const layout = { center };
+// Separaciones verticales del encabezado del listado: título → búsqueda → chips → primera fila de tarjetas.
+const listHeader = {
+  searchTop: spacing.md,
+  chipsTop: spacing.lg,
+  chipsBottom: spacing.sm,
+} as const;
+
+export const layout = { center, listHeader };

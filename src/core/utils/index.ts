@@ -1,3 +1,4 @@
+export * from './chip';
 export * from './color';
 export * from './effectiveness';
 export * from './error-message';

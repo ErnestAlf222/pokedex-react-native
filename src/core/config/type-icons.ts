@@ -46,6 +46,9 @@ export type TypeIconName = (typeof TYPE_ICONS)[PokemonTypeName];
 
 export const FALLBACK_TYPE_ICON: TypeIconName = 'circle';
 
+// Ícono del chip "Todos" del filtro de tipos.
+export const ALL_TYPES_ICON = 'apps';
+
 // Ícono de Material Icons por clase de daño de un movimiento.
 export const DAMAGE_CLASS_ICONS = {
   physical: 'front-hand',

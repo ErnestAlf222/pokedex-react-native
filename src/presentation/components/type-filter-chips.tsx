@@ -1,19 +1,7 @@
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import {
-  ALL_TYPES_VALUE,
-  UI_MESSAGES,
-  colors,
-  effects,
-  fontSize,
-  fontWeight,
-  getTypeColor,
-  getTypeLabel,
-  radius,
-  sizes,
-  spacing,
-  withAlpha,
-} from '../../core';
-import { PressableScale } from './pressable-scale';
+import { ScrollView, StyleSheet } from 'react-native';
+import { ALL_TYPES_VALUE, layout, spacing } from '../../core';
+import { useChipRowScroll } from '../hooks';
+import { TypeFilterChip } from './type-filter-chip';
 
 interface TypeFilterChipsProps {
   types: string[];
@@ -21,63 +9,47 @@ interface TypeFilterChipsProps {
   onSelect: (type: string) => void;
 }
 
-// Color del chip: el del tipo, o el de marca para "Todos".
-const getChipColor = (type: string): string =>
-  type === ALL_TYPES_VALUE ? colors.primary : getTypeColor(type);
-
-// Fila horizontal de chips con "Todos" y los tipos; solo uno puede estar activo.
+// Fila horizontal de chips con "Todos" y los tipos; solo uno puede estar activo y la fila se desplaza para mostrarlo.
 export const TypeFilterChips = ({
   types,
   selected,
   onSelect,
-}: TypeFilterChipsProps) => (
-  <ScrollView
-    horizontal
-    showsHorizontalScrollIndicator={false}
-    keyboardShouldPersistTaps="handled"
-    style={styles.row}
-    contentContainerStyle={styles.content}>
-    {[ALL_TYPES_VALUE, ...types].map(type => {
-      const isActive = type === selected;
-      const chipColor = getChipColor(type);
-      return (
-        <PressableScale
+}: TypeFilterChipsProps) => {
+  const { scrollRef, onViewportLayout, onChipLayout } =
+    useChipRowScroll(selected);
+
+  return (
+    <ScrollView
+      ref={scrollRef}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      onLayout={onViewportLayout}
+      style={styles.row}
+      contentContainerStyle={styles.content}>
+      {[ALL_TYPES_VALUE, ...types].map(type => (
+        <TypeFilterChip
           key={type}
-          accessibilityRole="button"
-          accessibilityState={{ selected: isActive }}
-          scaleTo={effects.chipPressedScale}
-          onPress={() => onSelect(type)}
-          style={[
-            styles.chip,
-            {
-              backgroundColor: isActive
-                ? chipColor
-                : withAlpha(chipColor, effects.chipInactiveOpacity),
-            },
-          ]}>
-          <Text
-            style={[
-              styles.label,
-              { color: isActive ? colors.onGradient : colors.textPrimary },
-            ]}>
-            {type === ALL_TYPES_VALUE
-              ? UI_MESSAGES.allTypes
-              : getTypeLabel(type)}
-          </Text>
-        </PressableScale>
-      );
-    })}
-  </ScrollView>
-);
+          type={type}
+          isActive={type === selected}
+          onPress={onSelect}
+          onLayout={onChipLayout(type)}
+        />
+      ))}
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
-  row: { flexGrow: 0, flexShrink: 0, marginTop: spacing.md },
-  content: { paddingHorizontal: spacing.md, gap: spacing.sm },
-  chip: {
-    justifyContent: 'center',
-    height: sizes.chipHeight,
-    paddingHorizontal: spacing.md,
-    borderRadius: radius.full,
+  row: {
+    flexGrow: 0,
+    flexShrink: 0,
+    marginTop: layout.listHeader.chipsTop,
+    marginBottom: layout.listHeader.chipsBottom,
   },
-  label: { fontSize: fontSize.caption, fontWeight: fontWeight.bold },
+  content: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    gap: spacing.sm,
+  },
 });

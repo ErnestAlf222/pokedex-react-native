@@ -2,6 +2,7 @@ export * from './use-ability-detail';
 export * from './use-all-pokemon';
 export * from './use-animated-color';
 export * from './use-catalog-query';
+export * from './use-chip-row-scroll';
 export * from './use-debounced-value';
 export * from './use-gradient-crossfade';
 export * from './use-hero-float';
