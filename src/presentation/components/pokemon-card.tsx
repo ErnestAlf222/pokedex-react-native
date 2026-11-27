@@ -44,61 +44,63 @@ const getCardColors = (types: string[]): [string, string] => {
   ];
 };
 
-// Tarjeta con degradado por tipo, marca de agua, imagen grande y animaciones de entrada y pulsación.
+// Tarjeta con degradado por tipo, marca de agua e imagen grande; la sombra vive en la vista que anima su opacidad para que se desvanezca con ella.
 export const PokemonCard = ({
   pokemon,
   types = [],
   enterDelayMs,
   onPress,
 }: PokemonCardProps) => (
-  <Animated.View
-    style={styles.cell}
-    entering={
-      enterDelayMs === undefined
-        ? undefined
-        : FadeInDown.delay(enterDelayMs).duration(CARD_ENTER_DURATION_MS)
-    }>
-    <PressableScale onPress={onPress} style={styles.card}>
-      <View style={styles.clip}>
-        <LinearGradient
-          colors={getCardColors(types)}
-          start={CARD_GRADIENT_START}
-          end={CARD_GRADIENT_END}
-          style={StyleSheet.absoluteFill}
+  <View style={styles.cell}>
+    <Animated.View
+      style={styles.card}
+      entering={
+        enterDelayMs === undefined
+          ? undefined
+          : FadeInDown.delay(enterDelayMs).duration(CARD_ENTER_DURATION_MS)
+      }>
+      <PressableScale onPress={onPress} style={styles.content}>
+        <View style={styles.clip}>
+          <LinearGradient
+            colors={getCardColors(types)}
+            start={CARD_GRADIENT_START}
+            end={CARD_GRADIENT_END}
+            style={StyleSheet.absoluteFill}
+          />
+          <MaterialIcons
+            name={POKEBALL_ICON_NAME}
+            size={sizes.cardWatermark}
+            color={colors.textPrimary}
+            style={styles.watermark}
+          />
+        </View>
+        <Text style={styles.number}>{formatPokemonNumber(pokemon.id)}</Text>
+        <Image
+          source={{ uri: pokemon.imageUrl }}
+          style={styles.image}
+          resizeMode="contain"
         />
-        <MaterialIcons
-          name={POKEBALL_ICON_NAME}
-          size={sizes.cardWatermark}
-          color={colors.textPrimary}
-          style={styles.watermark}
-        />
-      </View>
-      <Text style={styles.number}>{formatPokemonNumber(pokemon.id)}</Text>
-      <Image
-        source={{ uri: pokemon.imageUrl }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-      <Text style={styles.name} numberOfLines={1}>
-        {formatSlug(pokemon.name)}
-      </Text>
-      <View style={styles.badges}>
-        {types.map(type => (
-          <TypeBadge key={type} type={type} compact />
-        ))}
-      </View>
-    </PressableScale>
-  </Animated.View>
+        <Text style={styles.name} numberOfLines={1}>
+          {formatSlug(pokemon.name)}
+        </Text>
+        <View style={styles.badges}>
+          {types.map(type => (
+            <TypeBadge key={type} type={type} compact />
+          ))}
+        </View>
+      </PressableScale>
+    </Animated.View>
+  </View>
 );
 
 const styles = StyleSheet.create({
   cell: { width: `${PERCENT / LIST_COLUMNS}%`, padding: spacing.xs },
   card: {
-    padding: spacing.md,
     backgroundColor: colors.surface,
     borderRadius: radius.md,
     ...shadows.card,
   },
+  content: { padding: spacing.md },
   clip: {
     ...StyleSheet.absoluteFill,
     overflow: 'hidden',

@@ -7,7 +7,6 @@ import {
   fontSize,
   fontWeight,
   radius,
-  shadows,
   sizes,
   spacing,
   withAlpha,
@@ -20,7 +19,7 @@ interface InfoItemProps {
   icon?: DetailIconName;
 }
 
-// Dato con su etiqueta; con tint se muestra como tarjeta con sombra, fondo suave de ese color e ícono opcional.
+// Dato con su etiqueta; con tint se muestra como tarjeta sin elevación (evita el marco gris al animar opacidad), con fondo suave de ese color e ícono opcional.
 export const InfoItem = ({ label, value, tint, icon }: InfoItemProps) => (
   <View style={[styles.item, tint !== undefined && styles.card]}>
     {tint !== undefined && (
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderRadius: radius.md,
     backgroundColor: colors.background,
-    ...shadows.card,
   },
   tint: { ...StyleSheet.absoluteFill, borderRadius: radius.md },
   labelRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },

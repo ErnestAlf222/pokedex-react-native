@@ -1,7 +1,9 @@
 import {
+  EVOLUTION_LEARN_LEVEL,
   LabelMap,
   MULTIPLIER_LABELS,
   TYPE_LABELS,
+  UI_MESSAGES,
   POKEMON_NUMBER_PAD_CHAR,
   POKEMON_NUMBER_PAD_LENGTH,
   POKEMON_NUMBER_PREFIX,
@@ -31,6 +33,12 @@ export const formatMultiplier = (multiplier: number): string =>
 // Devuelve la etiqueta de la clave en el mapa; si falta, cae al texto legible del slug.
 export const getLabel = (labels: LabelMap, key: string): string =>
   labels[key] ?? formatSlug(key);
+
+// Texto del nivel de un movimiento: "Nivel N", o "Evo." si se aprende al evolucionar (nivel 0).
+export const formatMoveLevel = (level: number): string =>
+  level === EVOLUTION_LEARN_LEVEL
+    ? UI_MESSAGES.learnedOnEvolution
+    : `${UI_MESSAGES.level} ${level}`;
 
 // Etiqueta en español de un tipo de Pokémon.
 export const getTypeLabel = (type: string): string =>

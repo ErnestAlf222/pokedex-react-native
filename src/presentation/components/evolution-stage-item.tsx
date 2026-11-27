@@ -14,19 +14,21 @@ import { EvolutionStage } from '../../domain';
 interface EvolutionStageItemProps {
   stage: EvolutionStage;
   isCurrent: boolean;
+  color: string;
   onPress: () => void;
 }
 
-// Etapa de la cadena evolutiva; la actual se resalta y no es pulsable.
+// Etapa de la cadena evolutiva; la actual se resalta con el color del tipo y no es pulsable.
 export const EvolutionStageItem = ({
   stage,
   isCurrent,
+  color,
   onPress,
 }: EvolutionStageItemProps) => (
   <Pressable
     disabled={isCurrent}
     onPress={onPress}
-    style={[styles.item, isCurrent && styles.current]}>
+    style={[styles.item, isCurrent && { borderColor: color }]}>
     <Image
       source={{ uri: stage.imageUrl }}
       style={styles.image}
@@ -47,7 +49,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.surface,
   },
-  current: { borderColor: colors.primary },
   image: { width: sizes.evolutionImage, height: sizes.evolutionImage },
   number: { fontSize: fontSize.caption, color: colors.textSecondary },
   name: {

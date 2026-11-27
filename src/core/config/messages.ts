@@ -35,6 +35,7 @@ export const UI_MESSAGES = {
   total: 'Total',
   noMoves: 'Sin movimientos por nivel',
   level: 'Nivel',
+  learnedOnEvolution: 'Evo.',
 } as const;
 
 export const DETAIL_TAB_LABELS: Record<DetailTab, string> = {

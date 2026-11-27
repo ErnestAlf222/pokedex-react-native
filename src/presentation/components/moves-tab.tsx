@@ -5,6 +5,7 @@ import {
   colors,
   fontSize,
   fontWeight,
+  formatMoveLevel,
   formatSlug,
   spacing,
 } from '../../core';
@@ -24,7 +25,7 @@ export const MovesTab = ({ moves }: MovesTabProps) =>
       {moves.map(({ name, level }, index) => (
         <StaggerItem key={`${name}-${level}`} index={index}>
           <View style={styles.row}>
-            <Text style={styles.level}>{`${UI_MESSAGES.level} ${level}`}</Text>
+            <Text style={styles.level}>{formatMoveLevel(level)}</Text>
             <Text style={styles.name}>
               {`${MOVE_SEPARATOR}${formatSlug(name)}`}
             </Text>

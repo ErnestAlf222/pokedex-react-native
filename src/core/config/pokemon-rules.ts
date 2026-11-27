@@ -1,5 +1,7 @@
 export const LEVEL_UP_LEARN_METHOD = 'level-up';
 export const MAX_DETAIL_MOVES = 10;
+// Nivel 0 en PokéAPI: el movimiento se aprende al evolucionar.
+export const EVOLUTION_LEARN_LEVEL = 0;
 
 // Grupos de versiones por fecha de lanzamiento (del más antiguo al más reciente); el orden de la API no es cronológico.
 export const MOVE_VERSION_GROUPS = [

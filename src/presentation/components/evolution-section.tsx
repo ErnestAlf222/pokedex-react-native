@@ -8,6 +8,7 @@ import { EvolutionStageItem } from './evolution-stage-item';
 interface EvolutionSectionProps {
   stages: EvolutionStage[];
   currentId: number;
+  color: string;
   onSelect: (id: number) => void;
   blocksGesture?: PanGesture;
 }
@@ -18,6 +19,7 @@ const ITEM_STRIDE = sizes.evolutionItem + spacing.sm;
 export const EvolutionSection = ({
   stages,
   currentId,
+  color,
   onSelect,
   blocksGesture,
 }: EvolutionSectionProps) => {
@@ -66,6 +68,7 @@ export const EvolutionSection = ({
           key={stage.id}
           stage={stage}
           isCurrent={stage.id === currentId}
+          color={color}
           onPress={() => onSelect(stage.id)}
         />
       ))}

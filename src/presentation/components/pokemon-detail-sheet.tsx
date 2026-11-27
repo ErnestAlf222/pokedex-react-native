@@ -141,6 +141,7 @@ export const PokemonDetailSheet = ({
       <EvolutionSection
         stages={pokemon.evolutions}
         currentId={currentId}
+        color={color}
         onSelect={selectStage}
         blocksGesture={swipe}
       />
