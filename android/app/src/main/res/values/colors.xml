@@ -1,0 +1,11 @@
+<resources>
+    <!-- Colores de marca tomados de src/core/theme/colors.ts -->
+    <!-- colors.primary -->
+    <color name="brand_primary">#E53935</color>
+    <!-- colors.surface -->
+    <color name="brand_surface">#F5F5F5</color>
+    <!-- colors.background -->
+    <color name="brand_background">#FFFFFF</color>
+    <!-- colors.textPrimary -->
+    <color name="brand_dark">#1D1D1D</color>
+</resources>
