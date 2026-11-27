@@ -1,5 +1,7 @@
 import {
+  ABILITY_ENDPOINT,
   INITIAL_OFFSET,
+  MOVE_ENDPOINT,
   POKEAPI_BASE_URL,
   POKEMON_ENDPOINT,
   POKEMON_FULL_LIST_LIMIT,
@@ -9,7 +11,9 @@ import {
   getJson,
 } from '../../core';
 import {
+  AbilityDto,
   EvolutionChainDto,
+  MoveDto,
   PokemonDto,
   PokemonListDto,
   PokemonSpeciesDto,
@@ -60,6 +64,16 @@ export class PokemonRemoteDataSource {
         getJson<TypeDamageRelationsDto>(pokeApiUrl(`${TYPE_ENDPOINT}/${name}`)),
       ),
     );
+  }
+
+  // Pide un movimiento por nombre.
+  getMove(name: string): Promise<MoveDto> {
+    return getJson<MoveDto>(pokeApiUrl(`${MOVE_ENDPOINT}/${name}`));
+  }
+
+  // Pide una habilidad por nombre.
+  getAbility(name: string): Promise<AbilityDto> {
+    return getJson<AbilityDto>(pokeApiUrl(`${ABILITY_ENDPOINT}/${name}`));
   }
 
   // Pide los datos básicos de un Pokémon por id.

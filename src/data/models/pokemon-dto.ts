@@ -19,7 +19,7 @@ export interface PokemonDto {
   base_experience: number;
   types: { type: NamedResourceDto }[];
   stats: { base_stat: number; stat: NamedResourceDto }[];
-  abilities: { ability: NamedResourceDto }[];
+  abilities: { ability: NamedResourceDto; is_hidden: boolean }[];
   moves: PokemonMoveDto[];
   species: NamedResourceDto;
 }

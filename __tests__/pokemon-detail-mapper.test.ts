@@ -53,7 +53,10 @@ describe('toPokemonDetail', () => {
 
   it('mapea los tipos y las habilidades', () => {
     expect(detail.types).toEqual(['grass', 'poison']);
-    expect(detail.abilities).toEqual(['overgrow', 'chlorophyll']);
+    expect(detail.abilities).toEqual([
+      { name: 'overgrow', isHidden: false },
+      { name: 'chlorophyll', isHidden: true },
+    ]);
   });
 
   it('mapea los stats con su nombre y valor base, y calcula el total', () => {

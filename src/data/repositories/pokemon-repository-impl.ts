@@ -1,4 +1,6 @@
 import {
+  AbilityDetail,
+  MoveDetail,
   Page,
   PokemonDetail,
   PokemonRepository,
@@ -8,6 +10,8 @@ import {
 } from '../../domain';
 import { PokemonRemoteDataSource } from '../datasources';
 import {
+  toAbilityDetail,
+  toMoveDetail,
   toPokemonDetail,
   toPokemonPage,
   toPokemonSummary,
@@ -61,5 +65,15 @@ export class PokemonRepositoryImpl implements PokemonRepository {
   ): Promise<TypeDamageRelations[]> {
     const dtos = await this.remoteDataSource.getTypeDamageRelations(typeNames);
     return dtos.map(toTypeDamageRelations);
+  }
+
+  // Pide un movimiento por nombre y lo mapea a la entidad de dominio.
+  async getMoveDetail(name: string): Promise<MoveDetail> {
+    return toMoveDetail(await this.remoteDataSource.getMove(name));
+  }
+
+  // Pide una habilidad por nombre y la mapea a la entidad de dominio.
+  async getAbilityDetail(name: string): Promise<AbilityDetail> {
+    return toAbilityDetail(await this.remoteDataSource.getAbility(name));
   }
 }

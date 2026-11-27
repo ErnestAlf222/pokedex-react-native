@@ -1,4 +1,4 @@
-import { cleanApiText, pickLocalized } from '../src/core';
+import { cleanApiText, pickLocalized, pickLocalizedText } from '../src/core';
 import { bulbasaurSpeciesDto } from '../__fixtures__/pokemon-data';
 
 const { flavor_text_entries, genera } = bulbasaurSpeciesDto;
@@ -37,6 +37,55 @@ describe('pickLocalized', () => {
   it('devuelve undefined si no hay ni el idioma ni el respaldo', () => {
     expect(pickLocalized([])).toBeUndefined();
     expect(pickLocalized(genera, 'fr', 'de')).toBeUndefined();
+  });
+});
+
+// Pruebas del selector de texto localizado para listas con distinta forma (names, flavor text, genera).
+describe('pickLocalizedText', () => {
+  const names = [
+    { name: 'Tackle', language: { name: 'en' } },
+    { name: 'Placaje', language: { name: 'es' } },
+  ];
+  const flavors = [
+    { flavor_text: 'Línea uno\nlínea dos', language: { name: 'es' } },
+    { flavor_text: 'Line one', language: { name: 'en' } },
+  ];
+
+  it('toma el campo indicado de la entrada en español', () => {
+    expect(pickLocalizedText(names, ({ name }) => name)).toBe('Placaje');
+  });
+
+  it('limpia el texto con el mismo criterio que cleanApiText', () => {
+    expect(pickLocalizedText(flavors, ({ flavor_text }) => flavor_text)).toBe(
+      'Línea uno línea dos',
+    );
+  });
+
+  it('cae al inglés si no hay entrada en español', () => {
+    expect(
+      pickLocalizedText(
+        names.filter(({ language }) => language.name !== 'es'),
+        ({ name }) => name,
+      ),
+    ).toBe('Tackle');
+  });
+
+  it('devuelve una cadena vacía si no hay ni español ni inglés', () => {
+    expect(pickLocalizedText([], ({ name }: { name: string }) => name)).toBe(
+      '',
+    );
+  });
+
+  it('permite indicar otro idioma y otro respaldo', () => {
+    expect(pickLocalizedText(names, ({ name }) => name, 'en', 'es')).toBe(
+      'Tackle',
+    );
+  });
+
+  it('sirve igual con la forma de los genera de la especie', () => {
+    expect(pickLocalizedText(genera, ({ genus }) => genus)).toBe(
+      'Pokémon Semilla',
+    );
   });
 });
 

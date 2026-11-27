@@ -3,6 +3,8 @@ import { POKEAPI_SPRITES_BASE_URL } from './env';
 export const POKEMON_ENDPOINT = '/pokemon';
 export const POKEMON_SPECIES_ENDPOINT = '/pokemon-species';
 export const TYPE_ENDPOINT = '/type';
+export const MOVE_ENDPOINT = '/move';
+export const ABILITY_ENDPOINT = '/ability';
 export const POKEMON_PAGE_SIZE = 20;
 export const POKEMON_FULL_LIST_LIMIT = 2000;
 export const POKEMON_QUERY_PARAMS = { offset: 'offset', limit: 'limit' } as const;

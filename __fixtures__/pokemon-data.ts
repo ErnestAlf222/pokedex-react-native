@@ -68,8 +68,8 @@ export const bulbasaurDto: PokemonDto = {
     { base_stat: 45, stat: resource('stat', 'speed', 6) },
   ],
   abilities: [
-    { ability: resource('ability', 'overgrow', 65) },
-    { ability: resource('ability', 'chlorophyll', 34) },
+    { ability: resource('ability', 'overgrow', 65), is_hidden: false },
+    { ability: resource('ability', 'chlorophyll', 34), is_hidden: true },
   ],
   moves: [
     move('vine-whip', 22, [

@@ -10,6 +10,11 @@ export interface PokemonMove {
   level: number;
 }
 
+export interface PokemonAbility {
+  name: string;
+  isHidden: boolean;
+}
+
 export interface PokemonGender {
   female: number;
   male: number;
@@ -23,7 +28,7 @@ export interface PokemonDetail {
   types: string[];
   stats: PokemonStat[];
   statsTotal: number;
-  abilities: string[];
+  abilities: PokemonAbility[];
   height: number;
   weight: number;
   description: string;

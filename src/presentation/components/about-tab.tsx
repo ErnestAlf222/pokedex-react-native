@@ -93,7 +93,7 @@ export const AboutTab = ({
           icon={DETAIL_ICONS.abilities}
           color={color}>
           <LabelChipList
-            labels={pokemon.abilities.map(formatSlug)}
+            labels={pokemon.abilities.map(({ name }) => formatSlug(name))}
             color={color}
           />
         </DetailSection>

@@ -1,4 +1,7 @@
+export * from './ability-dto';
 export * from './evolution-chain-dto';
+export * from './localized-name-dto';
+export * from './move-dto';
 export * from './named-resource-dto';
 export * from './pokemon-dto';
 export * from './pokemon-list-dto';

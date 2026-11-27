@@ -6,8 +6,7 @@ import {
   MOVE_VERSION_GROUPS,
   PERCENT,
   POKEMON_SHINY_IMAGE_URL_TEMPLATE,
-  cleanApiText,
-  pickLocalized,
+  pickLocalizedText,
 } from '../../core';
 import { PokemonDetail, PokemonGender, PokemonMove } from '../../domain';
 import {
@@ -73,13 +72,17 @@ export const toPokemonDetail = (
     types: pokemon.types.map(({ type }) => type.name),
     stats,
     statsTotal: stats.reduce((total, { value }) => total + value, 0),
-    abilities: pokemon.abilities.map(({ ability }) => ability.name),
+    abilities: pokemon.abilities.map(({ ability, is_hidden }) => ({
+      name: ability.name,
+      isHidden: is_hidden,
+    })),
     height: pokemon.height,
     weight: pokemon.weight,
-    description: cleanApiText(
-      pickLocalized(species.flavor_text_entries)?.flavor_text ?? '',
+    description: pickLocalizedText(
+      species.flavor_text_entries,
+      ({ flavor_text }) => flavor_text,
     ),
-    category: cleanApiText(pickLocalized(species.genera)?.genus ?? ''),
+    category: pickLocalizedText(species.genera, ({ genus }) => genus),
     captureRate: species.capture_rate,
     gender: toGender(species.gender_rate),
     eggGroups: species.egg_groups.map(({ name }) => name),

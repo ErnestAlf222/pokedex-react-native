@@ -41,3 +41,14 @@ export const cleanApiText = (text: string): string =>
     .join('')
     .replace(WHITESPACE_RUN, ' ')
     .trim();
+
+// Texto limpio de la entrada localizada más reciente, tomado con el selector (names → name, flavor_text → flavor_text); cadena vacía si no hay.
+export const pickLocalizedText = <T extends LocalizedEntry>(
+  entries: T[],
+  select: (entry: T) => string,
+  language?: string,
+  fallback?: string,
+): string => {
+  const entry = pickLocalized(entries, language, fallback);
+  return entry === undefined ? '' : cleanApiText(select(entry));
+};
